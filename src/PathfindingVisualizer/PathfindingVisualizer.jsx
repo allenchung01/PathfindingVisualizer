@@ -43,6 +43,19 @@ export default class PathfindingVisualizer extends Component {
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
         const {visitedNodesInOrder, shortestPathReversed} = dijkstra(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+        this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+    }
+
+    // Visualize Breadth First Search algorithm.
+    visualizeBreadthFirstSearch() {
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+        const {visitedNodesInOrder, shortestPathReversed} = breadthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+        this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+    }
+
+    animateSearch(visitedNodesInOrder, shortestPathReversed) {
         // Animate the discovery of nodes.
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
@@ -58,12 +71,6 @@ export default class PathfindingVisualizer extends Component {
             }, 100 *(shortestPathReversed.length - i));
         }
     }
-
-    // Visualize Breadth First Search algorithm.
-    visualizeBreadthFirstSearch() {
-        breadthFirstSearch();
-    }
-
 }
 
 // Node object constructor.
