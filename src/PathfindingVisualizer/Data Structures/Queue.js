@@ -4,17 +4,14 @@ export default class Queue {
         this.queue = new DoublyLinkedList();
     }
 
-    // Insert an element into the queue.
     enqueue(node) {
         this.queue.insert(new ListNode(node));
     }
 
-    // Pop the first element from the queue.
     dequeue() {
         return this.queue.popHead();
     }
 
-    // Returns true if the queue is has no elements.
     isEmpty() {
         return this.queue.isEmpty();
     }
@@ -26,7 +23,6 @@ class DoublyLinkedList {
         this.tail = head;
     }
 
-    // Returns the first element of the list.
     getHead() {
         return this.head.getData();
     }
@@ -55,12 +51,12 @@ class DoublyLinkedList {
         return listNode.getData();
     }
 
-    // Returns true if there are no elements in the list.
     isEmpty() {
         return this.head === null;
     }
 }
 
+// The node to be used in the LinkedList.
 class ListNode {
     constructor(data) {
         this.data = data;

@@ -19,6 +19,14 @@ export default class Node extends Component {
         });
     }
 
+    markUnvisited() {
+        this.setState({
+            isVisited: false,
+            isPath: false,
+            distance: Infinity,
+        });
+    }
+
     markAsPath() {
         this.setState({isPath: true});
     }
@@ -32,6 +40,6 @@ export default class Node extends Component {
             isPath ? 'node-path':
             isVisited ? 'node-visited': 
             '';
-        return <div className = {`node ${nodeType}`}>{distance}</div>
+        return <div className = {`node ${nodeType}`}></div>
     }
 }

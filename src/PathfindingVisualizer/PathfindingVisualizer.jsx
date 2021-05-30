@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Node from './Node/Node';
 import {dijkstra} from './Search Algorithms/Dijkstra';
 import {breadthFirstSearch} from './Search Algorithms/BreadthFirstSearch';
+import {depthFirstSearch} from './Search Algorithms/DepthFirstSearch';
 
 import './PathfindingVisualizer.css';
 
@@ -32,6 +33,7 @@ export default class PathfindingVisualizer extends Component {
             <div>
                 <button onClick={() => this.visualizeDijkstra()}>Dijkstra</button>
                 <button onClick={() => this.visualizeBreadthFirstSearch()}>Breadth First Search</button>
+                <button onClick={() => this.visualizeDepthFirstSearch()}>Depth First Search</button>
                 {displayGrid(grid)}
             </div>
         );
@@ -39,6 +41,8 @@ export default class PathfindingVisualizer extends Component {
 
     // Visualize Dijkstra search algorithm.
     visualizeDijkstra() {
+        resetNodes(this.state.grid);
+        this.setState({grid: this.state.grid});
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
@@ -48,6 +52,8 @@ export default class PathfindingVisualizer extends Component {
 
     // Visualize Breadth First Search algorithm.
     visualizeBreadthFirstSearch() {
+        resetNodes(this.state.grid);
+        this.setState({grid: this.state.grid});
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
@@ -55,7 +61,18 @@ export default class PathfindingVisualizer extends Component {
         this.animateSearch(visitedNodesInOrder, shortestPathReversed);
     }
 
-    animateSearch(visitedNodesInOrder, shortestPathReversed) {
+    // Visualize Depth First Search algorithm.
+    visualizeDepthFirstSearch() {
+        resetNodes(this.state.grid);
+        this.setState({grid: this.state.grid});
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+        const {visitedNodesInOrder, pathReversed} = depthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+        this.animateSearch(visitedNodesInOrder, pathReversed);
+    }
+
+    animateSearch(visitedNodesInOrder, pathReversed) {
         // Animate the discovery of nodes.
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
@@ -64,11 +81,11 @@ export default class PathfindingVisualizer extends Component {
             }, 5 * i);
         }
         // Animate the shortest path.
-        for (let i = shortestPathReversed.length - 1; i >= 0; i--) {
+        for (let i = pathReversed.length - 1; i >= 0; i--) {
             setTimeout(() => {
-                const node = shortestPathReversed[i];
+                const node = pathReversed[i];
                 node.ref.current.markAsPath(); 
-            }, 100 *(shortestPathReversed.length - i));
+            }, 100 *(pathReversed.length - i));
         }
     }
 }
@@ -128,7 +145,11 @@ function displayGrid(nodes) {
 function resetNodes(grid) {
     for (const row of grid) {
         for (const node of row) {
+            node.ref.current.markUnvisited();
             node.isVisited = false;
+            node.previousNode = null;
+            node.distance = Infinity;
+
         }
     }
 }
