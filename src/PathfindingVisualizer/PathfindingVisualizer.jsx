@@ -23,7 +23,7 @@ export default class PathfindingVisualizer extends Component {
     }
 
     componentDidMount() {
-        const grid = createGrid();
+        const grid = this.createGrid();
         this.setState({grid});
     }
 
@@ -34,14 +34,14 @@ export default class PathfindingVisualizer extends Component {
                 <button onClick={() => this.visualizeDijkstra()}>Dijkstra</button>
                 <button onClick={() => this.visualizeBreadthFirstSearch()}>Breadth First Search</button>
                 <button onClick={() => this.visualizeDepthFirstSearch()}>Depth First Search</button>
-                {displayGrid(grid)}
+                {this.displayGrid(grid)}
             </div>
         );
     }
 
     // Visualize Dijkstra search algorithm.
     visualizeDijkstra() {
-        resetNodes(this.state.grid);
+        this.resetNodes(this.state.grid);
         this.setState({grid: this.state.grid});
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
@@ -52,7 +52,7 @@ export default class PathfindingVisualizer extends Component {
 
     // Visualize Breadth First Search algorithm.
     visualizeBreadthFirstSearch() {
-        resetNodes(this.state.grid);
+        this.resetNodes(this.state.grid);
         this.setState({grid: this.state.grid});
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
@@ -63,7 +63,7 @@ export default class PathfindingVisualizer extends Component {
 
     // Visualize Depth First Search algorithm.
     visualizeDepthFirstSearch() {
-        resetNodes(this.state.grid);
+        this.resetNodes(this.state.grid);
         this.setState({grid: this.state.grid});
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
@@ -72,8 +72,8 @@ export default class PathfindingVisualizer extends Component {
         this.animateSearch(visitedNodesInOrder, pathReversed);
     }
 
+    // Animate the discovery of nodes.
     animateSearch(visitedNodesInOrder, pathReversed) {
-        // Animate the discovery of nodes.
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
               const node = visitedNodesInOrder[i];
@@ -86,8 +86,8 @@ export default class PathfindingVisualizer extends Component {
         }
     }
 
+    // Animate the traversal of path.
     animatePath(pathReversed) {
-        // Animate the path.
         for (let i = pathReversed.length - 1; i >= 0; i--) {
             setTimeout(() => {
                 const node = pathReversed[i];
@@ -95,10 +95,67 @@ export default class PathfindingVisualizer extends Component {
             }, 1000 * ((pathReversed.length - i) / pathReversed.length));
         }
     }
+
+    // Handles onMouseDown event on node at given row and column.
+    handleOnMouseDown(row, col) {
+        const {grid} = this.state;
+        const node = grid[row][col];
+        node.isWall = !node.isWall;
+    }
+
+    // Create a 2D array of node objects.
+    createGrid() {
+        const grid = [];
+        for (let row = 0; row < NUM_ROWS; row++) {
+            const currentRow = [];
+            for (let col = 0; col < NUM_COLS; col++) {
+                const currNode = new NodeObj(col, row);
+                currentRow.push(currNode);
+            }
+            grid.push(currentRow);
+        }
+        return grid;
+    }
+
+    // Map the grid to Node components that are displayed.
+    displayGrid(nodes) {
+        return  (
+            <div className="grid">
+                {nodes.map((row, rowIndex) => {
+                    return <div className="row" key={rowIndex}>
+                        {row.map((node, nodeIndex) => {
+                            return (
+                                <Node 
+                                ref={node.ref}
+                                key={nodeIndex}
+                                isStart={node.isStart} 
+                                isTarget={node.isTarget}
+                                row={node.row}
+                                col={node.col}
+                                handleOnMouseDown={this.handleOnMouseDown.bind(this)}>
+                                </Node>);
+                        })}
+                    </div>
+                })}
+            </div>
+        );
+    }
+
+    // Reset's all nodes back to an univisited state.
+    resetNodes(grid) {
+        for (const row of grid) {
+            for (const node of row) {
+                node.ref.current.markUnvisited();
+                node.isVisited = false;
+                node.previousNode = null;
+                node.distance = Infinity;
+            }
+        }
+    }
 }
 
 // Node object constructor.
-export function NodeObj(col, row) {
+function NodeObj(col, row) {
     this.col = col;
     this.row = row;
     this.isStart = row === START_NODE_ROW && col === START_NODE_COL;
@@ -111,60 +168,4 @@ export function NodeObj(col, row) {
     this.previousNode = null;
     // Each node has a reference to it's UI component.
     this.ref = React.createRef();
-}
-
-// Create a 2D array of node objects.
-function createGrid() {
-    const grid = [];
-    for (let row = 0; row < NUM_ROWS; row++) {
-        const currentRow = [];
-        for (let col = 0; col < NUM_COLS; col++) {
-            const currNode = new NodeObj(col, row);
-            currentRow.push(currNode);
-        }
-        grid.push(currentRow);
-    }
-    return grid;
-}
-
-// Map the grid to Node components that are displayed.
-function displayGrid(nodes) {
-    return  (
-        <div className="grid">
-            {nodes.map((row, rowIndex) => {
-                return <div className="row" key={rowIndex}>
-                    {row.map((node, nodeIndex) => {
-                        return (
-                            <Node 
-                            ref={node.ref}
-                            key={nodeIndex}
-                            isStart={node.isStart} 
-                            isTarget={node.isTarget}
-                            isVisited={node.isVisited}
-                            row={node.row}
-                            col={node.col}
-                            node={node}
-                            toggleWall={toggleWall}>
-                            </Node>);
-                    })}
-                </div>
-            })}
-        </div>
-    );
-}
-
-function toggleWall(node) {
-    node.isWall = !node.isWall;
-}
-
-// Reset's all nodes back to an univisited state.
-function resetNodes(grid) {
-    for (const row of grid) {
-        for (const node of row) {
-            node.ref.current.markUnvisited();
-            node.isVisited = false;
-            node.previousNode = null;
-            node.distance = Infinity;
-        }
-    }
 }

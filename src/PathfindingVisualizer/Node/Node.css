@@ -15,11 +15,11 @@
 }
 
 .node-finish {
-    background-color: red;
+    background-color: rgb(255, 64, 96);
 }
 
 .node-start {
-    background-color: green;
+    background-color: rgb(64, 255, 160);
 }
 
 .node-visited {

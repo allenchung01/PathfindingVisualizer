@@ -12,7 +12,6 @@ export default class Node extends Component {
             distance: Infinity,
             row: this.props.row,
             col: this.props.col,
-            node: this.props.node,
         };
     }
 
@@ -37,12 +36,13 @@ export default class Node extends Component {
 
     toggleWall() {
         this.setState({isWall: !this.state.isWall,});
-        this.props.toggleWall(this.props.node);
+        this.props.handleOnMouseDown(this.state.row, this.state.col);
     }
 
     render() {
         const {isVisited, isPath, distance, isWall} = this.state;
         const {isTarget, isStart} = this.props;
+        const node = this.state.node;
         const nodeType = 
             isTarget ? 'node-finish' : 
             isStart ? 'node-start' : 
@@ -53,8 +53,8 @@ export default class Node extends Component {
         return (
             <div className = {`node ${nodeType}`} 
             onMouseDown={() => this.toggleWall()}
-            onMouseUp = {}
-            onMouseOver = {}>
+            onMouseUp = {() => {}}
+            onMouseOver = {() => {}}>
             </div>)
     }
 }
