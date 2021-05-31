@@ -41,7 +41,6 @@ class DoublyLinkedList {
     // Removes the first element from the list.
     popHead() {
         const listNode = this.head;
-        console.log("list node:" + listNode);
         if (listNode !== null) {
             this.head = this.head.getNext();
         }

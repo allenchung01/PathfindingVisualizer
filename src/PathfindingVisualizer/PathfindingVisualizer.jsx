@@ -78,14 +78,21 @@ export default class PathfindingVisualizer extends Component {
             setTimeout(() => {
               const node = visitedNodesInOrder[i];
               node.ref.current.markAsVisited(node.distance);
+              // Start path animation after last visited node.
+              if (i === visitedNodesInOrder.length - 1) {
+                    this.animatePath(pathReversed);
+              }
             }, 5 * i);
         }
-        // Animate the shortest path.
+    }
+
+    animatePath(pathReversed) {
+        // Animate the path.
         for (let i = pathReversed.length - 1; i >= 0; i--) {
             setTimeout(() => {
                 const node = pathReversed[i];
                 node.ref.current.markAsPath(); 
-            }, 100 *(pathReversed.length - i));
+            }, 1000 * ((pathReversed.length - i) / pathReversed.length));
         }
     }
 }
@@ -97,6 +104,7 @@ export function NodeObj(col, row) {
     this.isStart = row === START_NODE_ROW && col === START_NODE_COL;
     this.isTarget = row === TARGET_NODE_ROW && col === TARGET_NODE_COL;
     this.isVisited = false;
+    this.isWall = false;
     // Distance from start node.
     this.distance = Infinity;
     // Previous node used to trace path.
@@ -132,13 +140,21 @@ function displayGrid(nodes) {
                             key={nodeIndex}
                             isStart={node.isStart} 
                             isTarget={node.isTarget}
-                            isVisited={node.isVisited}>
+                            isVisited={node.isVisited}
+                            row={node.row}
+                            col={node.col}
+                            node={node}
+                            toggleWall={toggleWall}>
                             </Node>);
                     })}
                 </div>
             })}
         </div>
     );
+}
+
+function toggleWall(node) {
+    node.isWall = !node.isWall;
 }
 
 // Reset's all nodes back to an univisited state.
@@ -149,7 +165,6 @@ function resetNodes(grid) {
             node.isVisited = false;
             node.previousNode = null;
             node.distance = Infinity;
-
         }
     }
 }

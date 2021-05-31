@@ -8,7 +8,11 @@ export default class Node extends Component {
         this.state = {
             isVisited: false,
             isPath: false,
+            isWall: false,
             distance: Infinity,
+            row: this.props.row,
+            col: this.props.col,
+            node: this.props.node,
         };
     }
 
@@ -31,15 +35,26 @@ export default class Node extends Component {
         this.setState({isPath: true});
     }
 
+    toggleWall() {
+        this.setState({isWall: !this.state.isWall,});
+        this.props.toggleWall(this.props.node);
+    }
+
     render() {
-        const {isVisited, isPath, distance} = this.state;
+        const {isVisited, isPath, distance, isWall} = this.state;
         const {isTarget, isStart} = this.props;
         const nodeType = 
             isTarget ? 'node-finish' : 
             isStart ? 'node-start' : 
+            isWall ? 'node-wall':
             isPath ? 'node-path':
             isVisited ? 'node-visited': 
             '';
-        return <div className = {`node ${nodeType}`}></div>
+        return (
+            <div className = {`node ${nodeType}`} 
+            onMouseDown={() => this.toggleWall()}
+            onMouseUp = {}
+            onMouseOver = {}>
+            </div>)
     }
 }

@@ -1,21 +1,22 @@
-// Returns ALL neighbors of 'node', visited or not.
+// Returns ALL neighbors of 'node', visited or not. Neighbors
+// cannot have walls.
 export function getNeighbors(node, numRows, numCols, grid) {
     const {row, col} = node;
     const neighbors = [];
     // North neighbor.
-    if (isSafe(row + 1, col, numRows, numCols)) {
+    if (isSafe(row + 1, col, numRows, numCols) && !grid[row + 1][col].isWall) {
         neighbors.push(grid[row + 1][col]);
     }
     // South neighbor.
-    if (isSafe(row - 1, col, numRows, numCols)) {
+    if (isSafe(row - 1, col, numRows, numCols) && !grid[row - 1][col].isWall) {
         neighbors.push(grid[row - 1][col]);
     }
     // East neighbor.
-    if (isSafe(row, col + 1, numRows, numCols)) {
+    if (isSafe(row, col + 1, numRows, numCols) && !grid[row][col + 1].isWall) {
         neighbors.push(grid[row][col + 1]);
     }
     // West neighbor.
-    if (isSafe(row, col - 1, numRows, numCols)) {
+    if (isSafe(row, col - 1, numRows, numCols) && !grid[row][col - 1].isWall) {
         neighbors.push(grid[row][col - 1]);
     }
     return neighbors;

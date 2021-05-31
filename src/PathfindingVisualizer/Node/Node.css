@@ -38,6 +38,11 @@
     background-color: turquoise;
 }
 
+.node-wall {
+    background-color: whitesmoke;
+    border-color: whitesmoke;
+}
+
 body {
     background-color: rgb(42, 54, 75);
 }
