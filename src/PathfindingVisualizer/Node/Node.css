@@ -61,7 +61,7 @@ body {
         transform: scale(1.2);
     }
     100% {
-        background-color: rgb(255, 255, 250);
+        background-color: orange;
         transform: scale(1);
     }
 }

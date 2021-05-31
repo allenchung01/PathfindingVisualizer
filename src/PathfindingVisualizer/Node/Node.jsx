@@ -36,7 +36,18 @@ export default class Node extends Component {
 
     toggleWall() {
         this.setState({isWall: !this.state.isWall,});
+    }
+
+    handleOnMouseDown() {
         this.props.handleOnMouseDown(this.state.row, this.state.col);
+    }
+
+    handleOnMouseUp() {
+        this.props.handleOnMouseUp();
+    }
+
+    handleOnMouseOver() {
+        this.props.handleOnMouseOver(this.state.row, this.state.col);
     }
 
     render() {
@@ -52,9 +63,9 @@ export default class Node extends Component {
             '';
         return (
             <div className = {`node ${nodeType}`} 
-            onMouseDown={() => this.toggleWall()}
-            onMouseUp = {() => {}}
-            onMouseOver = {() => {}}>
+            onMouseDown={this.handleOnMouseDown.bind(this)}
+            onMouseUp = {this.handleOnMouseUp.bind(this)}
+            onMouseOver = {this.handleOnMouseOver.bind(this)}>
             </div>)
     }
 }

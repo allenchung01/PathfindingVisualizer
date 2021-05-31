@@ -19,11 +19,13 @@ export default class PathfindingVisualizer extends Component {
         super(props);
         this.state = {
             grid: [],
+            mouseDown: false,
         };
     }
 
     componentDidMount() {
         const grid = this.createGrid();
+        document.body.onmouseup = this.handleOnMouseUp.bind(this);
         this.setState({grid});
     }
 
@@ -98,9 +100,24 @@ export default class PathfindingVisualizer extends Component {
 
     // Handles onMouseDown event on node at given row and column.
     handleOnMouseDown(row, col) {
-        const {grid} = this.state;
+        const grid = this.state.grid;
         const node = grid[row][col];
         node.isWall = !node.isWall;
+        node.ref.current.toggleWall();
+        this.setState({mouseDown: true});
+    }
+
+    handleOnMouseUp() {
+        this.setState({mouseDown: false});
+    }
+
+    handleOnMouseOver(row, col) {
+        if (this.state.mouseDown === true) {
+            const {grid} = this.state;
+            const node = grid[row][col];
+            node.isWall = !node.isWall;
+            node.ref.current.toggleWall();
+        }
     }
 
     // Create a 2D array of node objects.
@@ -132,7 +149,9 @@ export default class PathfindingVisualizer extends Component {
                                 isTarget={node.isTarget}
                                 row={node.row}
                                 col={node.col}
-                                handleOnMouseDown={this.handleOnMouseDown.bind(this)}>
+                                handleOnMouseDown={this.handleOnMouseDown.bind(this)}
+                                handleOnMouseUp={this.handleOnMouseUp.bind(this)}
+                                handleOnMouseOver={this.handleOnMouseOver.bind(this)}>
                                 </Node>);
                         })}
                     </div>
