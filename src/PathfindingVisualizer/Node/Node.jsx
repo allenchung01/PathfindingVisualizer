@@ -46,8 +46,8 @@ export default class Node extends Component {
         this.props.handleOnMouseUp();
     }
 
-    handleOnMouseOver() {
-        this.props.handleOnMouseOver(this.state.row, this.state.col);
+    handleOnMouseEnter() {
+        this.props.handleOnMouseEnter(this.state.row, this.state.col);
     }
 
     render() {
@@ -62,10 +62,13 @@ export default class Node extends Component {
             isVisited ? 'node-visited': 
             '';
         return (
-            <div className = {`node ${nodeType}`} 
-            onMouseDown={this.handleOnMouseDown.bind(this)}
+            <div
+            className = 'node-bounds' 
+            onMouseDown = {this.handleOnMouseDown.bind(this)}
             onMouseUp = {this.handleOnMouseUp.bind(this)}
-            onMouseOver = {this.handleOnMouseOver.bind(this)}>
+            onMouseEnter = {this.handleOnMouseEnter.bind(this)}>
+                <div className = {`node ${nodeType}`}></div>
             </div>)
+
     }
 }

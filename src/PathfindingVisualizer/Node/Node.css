@@ -14,6 +14,14 @@
     box-sizing: border-box;*/
 }
 
+/* The bounds of the node, to make sure the bounds
+don't change during resizing animations */
+.node-bounds {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
 .node-finish {
     background-color: rgb(255, 64, 96);
 }
@@ -41,6 +49,14 @@
 .node-wall {
     background-color: whitesmoke;
     border-color: whitesmoke;
+    animation-name: wallAnimation;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
 }
 
 body {
@@ -66,24 +82,17 @@ body {
     }
 }
 
-@keyframes visitedAnimation {
+@keyframes wallAnimation {
     0% {
-      transform: scale(0.3);
-      background-color: rgba(0, 0, 66, 0.75);
-      border-radius: 100%;
+        transform: scale(0.3);
+        background-color: whitesmoke;
     }
-  
     50% {
-      background-color: rgba(17, 104, 217, 0.75);
+        transform: scale(1.2);
+        background-color: whitesmoke;
     }
-  
-    75% {
-      transform: scale(1.2);
-      background-color: rgba(0, 217, 159, 0.75);
+    100%  {
+        transform: scale(1);
+        background-color: whitesmoke;
     }
-  
-    100% {
-      transform: scale(1);
-      background-color: rgba(0, 190, 218, 0.75);
-    }
-  }
+}

@@ -111,7 +111,7 @@ export default class PathfindingVisualizer extends Component {
         this.setState({mouseDown: false});
     }
 
-    handleOnMouseOver(row, col) {
+    handleOnMouseEnter(row, col) {
         if (this.state.mouseDown === true) {
             const {grid} = this.state;
             const node = grid[row][col];
@@ -151,7 +151,7 @@ export default class PathfindingVisualizer extends Component {
                                 col={node.col}
                                 handleOnMouseDown={this.handleOnMouseDown.bind(this)}
                                 handleOnMouseUp={this.handleOnMouseUp.bind(this)}
-                                handleOnMouseOver={this.handleOnMouseOver.bind(this)}>
+                                handleOnMouseEnter={this.handleOnMouseEnter.bind(this)}>
                                 </Node>);
                         })}
                     </div>
