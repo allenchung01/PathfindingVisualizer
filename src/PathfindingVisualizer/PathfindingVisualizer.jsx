@@ -94,11 +94,14 @@ export default class PathfindingVisualizer extends Component {
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
                 const node = visitedNodesInOrder[i];
-                // Normally shouldn't do this, but had to to optimize performance.
-                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
                 // Start path animation after last visited node.
                 if (i === visitedNodesInOrder.length - 1) {
                     this.animatePath(pathReversed);
+                } else {
+                    if (!node.isStart && !node.isTarget) {
+                        // Normally shouldn't do this, but had to to optimize performance.
+                        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+                    }
                 }
             }, 5 * i);
         }
@@ -109,7 +112,9 @@ export default class PathfindingVisualizer extends Component {
         for (let i = pathReversed.length - 1; i >= 0; i--) {
             setTimeout(() => {
                 const node = pathReversed[i];
-                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                if (!node.isStart && !node.isTarget) {
+                    document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                }
             }, 1000 * ((pathReversed.length - i) / pathReversed.length));
         }
     }
@@ -184,6 +189,10 @@ export default class PathfindingVisualizer extends Component {
     resetNodes(grid) {
         for (const row of grid) {
             for (const node of row) {
+                // We have to reset isVisited, and isPath of nodes the same way we set them.
+                if (!node.isWall && !node.isStart && !node.isTarget) {
+                    document.getElementById(`node-${node.row}-${node.col}`).className = 'node';
+                }
                 node.isVisited = false;
                 node.isPath = false;
                 node.previousNode = null;

@@ -58,8 +58,8 @@ don't change during resizing animations */
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-play-state: running;
-    background-color: turquoise;
-    border-color: turquoise;
+    background-color: rgb(211, 64, 255);
+    /*border-color: rgb(211, 64, 255);*/
 }
 
 .node-wall {
