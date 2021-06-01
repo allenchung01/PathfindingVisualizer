@@ -1,6 +1,6 @@
 .node {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     /*outline: 1px solid rgb(42, 54, 75);*/
     border-top: 1px;
     border-left: 1px;
@@ -17,9 +17,16 @@
 /* The bounds of the node, to make sure the bounds
 don't change during resizing animations */
 .node-bounds {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     display: inline-block;
+    /*border-top: 1px;
+    border-left: 1px;
+    border-bottom: 0px;
+    border-right: 0px;
+    border-style: solid;
+    border-color: rgb(42, 54, 75);*/
+    background-color: rgb(23, 32, 47);
 }
 
 .node-finish {
@@ -43,7 +50,16 @@ don't change during resizing animations */
 }
 
 .node-path {
+    animation-name: pathAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
     background-color: turquoise;
+    border-color: turquoise;
 }
 
 .node-wall {
@@ -65,19 +81,21 @@ body {
 
 @keyframes isVisited {
     0%   {
-        background-color: rgb(23, 32, 47);
+        background-color: rgb(64, 211, 255);
         transform: scale(0.3);
-        border-radius: 100%;
+        /*border-radius: 100%;*/
     }
     50%  {
-        background-color: rgb(75, 75, 42);
+        background-color: rgb(211, 64, 255);
+        transform: scale(1.2);
+        border-color: rgb(211, 64, 255);
     }
-    75%  {
+    /*75%  {
         background-color: rgb(222, 222, 94);
         transform: scale(1.2);
-    }
+    }*/
     100% {
-        background-color: orange;
+        background-color: rgb(23, 32, 47);
         transform: scale(1);
     }
 }
@@ -94,5 +112,17 @@ body {
     100%  {
         transform: scale(1);
         background-color: whitesmoke;
+    }
+}
+
+@keyframes pathAnimation {
+    0% {
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100%  {
+        transform: scale(1);
     }
 }
