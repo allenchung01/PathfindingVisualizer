@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+
 import Node from './Node/Node';
 import {dijkstra} from './Search Algorithms/Dijkstra';
 import {breadthFirstSearch} from './Search Algorithms/BreadthFirstSearch';
 import {depthFirstSearch} from './Search Algorithms/DepthFirstSearch';
+import {aStar} from './Search Algorithms/AStar';
 
 import './PathfindingVisualizer.css';
 
@@ -38,6 +40,7 @@ export default class PathfindingVisualizer extends Component {
                     <button onClick={() => this.visualizeDijkstra()}>Dijkstra's Algorithm</button>
                     <button onClick={() => this.visualizeBreadthFirstSearch()}>Breadth First Search</button>
                     <button onClick={() => this.visualizeDepthFirstSearch()}>Depth First Search</button>
+                    <button onClick={() => this.visualizeAStar()}>A* Search</button>
                 </div>
                 <div className="grid-functions">
                     <button onClick={this.clearWalls.bind(this)}>Clear Walls</button>
@@ -87,6 +90,20 @@ export default class PathfindingVisualizer extends Component {
         const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
         const {visitedNodesInOrder, pathReversed} = depthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
         this.animateSearch(visitedNodesInOrder, pathReversed);
+    }
+
+    // Visualize A* Search algorithm.
+    visualizeAStar() {
+        // Reset nodes to unvisited, non-path state.
+        let grid = this.copyGrid();
+        this.resetNodes(grid);
+        this.setState({grid: grid});
+        // Make another copy of grid to use with dijkstra algorithm.
+        grid = this.copyGrid();
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+        const {visitedNodesInOrder, shortestPathReversed} = aStar(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+        this.animateSearch(visitedNodesInOrder, shortestPathReversed);
     }
 
     // Animate the discovery of nodes.
