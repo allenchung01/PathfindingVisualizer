@@ -15,11 +15,12 @@ export function dijkstra (grid, startNode, targetNode, numRows, numCols) {
         visitedNodesInOrder.push(node);
         if (node === targetNode) {
             // The target node was discovered.
-            let pathNode = node.previousNode;
+            let pathNode = node;
             while (pathNode !== startNode) {
                 shortestPathReversed.push(pathNode);
                 pathNode = pathNode.previousNode;
             }
+            shortestPathReversed.push(pathNode);
             return {visitedNodesInOrder, shortestPathReversed};
         }
         const neighbors = getNeighbors(node, numRows, numCols, grid);

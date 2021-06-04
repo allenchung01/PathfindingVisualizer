@@ -1,5 +1,9 @@
+body {
+    background-color: rgb(18, 25, 34);
+}
+
 .grid {
-    margin: 50px 0 0 0;
+    margin: 20px 0 20px 0;
 }
 
 .row {
@@ -9,10 +13,51 @@
 }
 
 .search-algorithms {
-    margin-top: 20px;
+    margin-top: 0;
     margin-bottom: 0;
+    background-color: whitesmoke;
 }
 
 .grid-functions {
     margin-bottom: 20px;
+    background-color: whitesmoke;
+    border-style: solid;
+    border-bottom: 0;
+    border-top: solid 1px rgb(231, 231, 231);
+    border-left: 0;
+    border-right: 0;
+}
+
+.algorithm-button {
+    color: rgb(18, 25, 34);
+    background-color: whitesmoke;
+    font-weight: bold;
+    padding:20px;
+    border: none
+}
+
+.grid-function-button {
+    color: rgb(18, 25, 34);
+    background-color: whitesmoke;
+    font-weight: bold;
+    font-size:x-small;
+    padding:10px;
+    border: none
+}
+
+.algorithm-button:hover {
+    color: rgb(77, 107, 187);
+}
+
+.grid-function-button:hover {
+    color: rgb(77, 107, 187);
+}
+
+.credits {
+    padding: 20px;
+    background-color: whitesmoke;
+}
+
+a {
+    color: lightskyblue;
 }

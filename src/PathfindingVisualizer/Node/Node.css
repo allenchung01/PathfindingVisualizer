@@ -1,17 +1,13 @@
+/* The style of a default node. */
 .node {
     width: 28px;
     height: 28px;
-    /*outline: 1px solid rgb(42, 54, 75);*/
-    border-top: 1px;
-    border-left: 1px;
-    border-bottom: 0px;
-    border-right: 0px;
-    border-color: rgb(42, 54, 75);
-    border-style: solid;
-    display: inline-block;
-    background-color: rgb(23, 32, 47);
-    /*border: 1px solid rgb(42, 54, 75);
-    box-sizing: border-box;*/
+    border-top: 0px;
+    border-left: 0px;
+    border-bottom: 1px solid rgb(18, 25, 34);
+    border-right: 1px solid rgb(18, 25, 34);
+    box-sizing: border-box;
+    background-color: rgb(28, 38, 56);
 }
 
 /* The bounds of the node, to make sure the bounds
@@ -20,25 +16,24 @@ don't change during resizing animations */
     width: 28px;
     height: 28px;
     display: inline-block;
-    /*border-top: 1px;
-    border-left: 1px;
-    border-bottom: 0px;
-    border-right: 0px;
-    border-style: solid;
-    border-color: rgb(42, 54, 75);*/
-    background-color: rgb(23, 32, 47);
+    background-color: rgb(28, 38, 56);
 }
 
-.node-finish {
-    background-color: rgb(255, 64, 96);
+.node-target {
+    background-image: url("../Images/icons8-empty-flag-90.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: center center;
 }
 
 .node-start {
-    background-color: rgb(64, 255, 160);
+    background-image: url("../Images/icons8-launch-90.png");
+    background-repeat: no-repeat;
+    background-size: 22px;
+    background-position: center center;
 }
 
 .node-visited {
-    /*background-color: blue;*/
     animation-name: isVisited;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
@@ -49,7 +44,11 @@ don't change during resizing animations */
     animation-play-state: running;
 }
 
-.node-path {
+.node-path-horizontal {
+    background-image: url(../Images/horizontal-line.png);
+    background-repeat: no-repeat;
+    background-size: 28px;
+    background-position: center center;
     animation-name: pathAnimation;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
@@ -58,13 +57,85 @@ don't change during resizing animations */
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-play-state: running;
-    background-color: rgb(211, 64, 255);
-    /*border-color: rgb(211, 64, 255);*/
+}
+
+.node-path-vertical {
+    background-image: url(../Images/vertical-line.png);
+    background-repeat: no-repeat;
+    background-size: 28px;
+    background-position: center center;
+    animation-name: pathAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.node-path-ul {
+    background-image: url(../Images/ul.png);
+    background-repeat: no-repeat;
+    background-size: 28px;
+    background-position: center center;
+    animation-name: pathAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.node-path-ur {
+    background-image: url(../Images/ur.png);
+    background-repeat: no-repeat;
+    background-size: 28px;
+    background-position: center center;
+    animation-name: pathAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.node-path-bl {
+    background-image: url(../Images/bl.png);
+    background-repeat: no-repeat;
+    background-size: 28px;
+    background-position: center center;
+    animation-name: pathAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.node-path-br {
+    background-image: url(../Images/br.png);
+    background-repeat: no-repeat;
+    background-size: 28px;
+    background-position: center center;
+    animation-name: pathAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
 }
 
 .node-wall {
-    background-color: whitesmoke;
-    border-color: whitesmoke;
+    background-color: rgb(18, 25, 34);
     animation-name: wallAnimation;
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
@@ -75,43 +146,35 @@ don't change during resizing animations */
     animation-play-state: running;
 }
 
-body {
-    background-color: rgb(42, 54, 75);
-}
-
 @keyframes isVisited {
     0%   {
         background-color: rgb(64, 211, 255);
         transform: scale(0.3);
-        /*border-radius: 100%;*/
     }
     50%  {
         background-color: rgb(211, 64, 255);
         transform: scale(1.2);
         border-color: rgb(211, 64, 255);
     }
-    /*75%  {
-        background-color: rgb(222, 222, 94);
-        transform: scale(1.2);
-    }*/
     100% {
-        background-color: rgb(23, 32, 47);
+        background-color: rgb(28, 38, 56);
         transform: scale(1);
+        border-color: rgb(18, 25, 34);
     }
 }
 
 @keyframes wallAnimation {
     0% {
         transform: scale(0.3);
-        background-color: whitesmoke;
+        background-color: rgb(18, 25, 34);
     }
     50% {
         transform: scale(1.2);
-        background-color: whitesmoke;
+        background-color: rgb(18, 25, 34);
     }
     100%  {
         transform: scale(1);
-        background-color: whitesmoke;
+        background-color: rgb(18, 25, 34);
     }
 }
 

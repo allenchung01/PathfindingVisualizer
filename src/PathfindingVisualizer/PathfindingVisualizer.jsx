@@ -8,13 +8,13 @@ import {aStar} from './Search Algorithms/AStar';
 
 import './PathfindingVisualizer.css';
 
-const NUM_ROWS = 20;
-const NUM_COLS = 40;
+const NUM_ROWS = 20
+const NUM_COLS = Math.floor((getScreenWidth() - 40) / 28);
 
 const START_NODE_ROW = 1;
 const START_NODE_COL = 1;
-const TARGET_NODE_ROW = 18;
-const TARGET_NODE_COL = 38;
+const TARGET_NODE_ROW = NUM_ROWS - 2;
+const TARGET_NODE_COL = NUM_COLS - 2;
 
 export default class PathfindingVisualizer extends Component {
     constructor(props) {
@@ -37,76 +37,73 @@ export default class PathfindingVisualizer extends Component {
         return (
             <div>
                 <div className="search-algorithms">
-                    <button onClick={() => this.visualizeDijkstra()}>Dijkstra's Algorithm</button>
-                    <button onClick={() => this.visualizeBreadthFirstSearch()}>Breadth First Search</button>
-                    <button onClick={() => this.visualizeDepthFirstSearch()}>Depth First Search</button>
-                    <button onClick={() => this.visualizeAStar()}>A* Search</button>
+                    <button onClick={() => this.visualizeDijkstra()} className="algorithm-button">Dijkstra's Algorithm</button>
+                    <button onClick={() => this.visualizeBreadthFirstSearch()} className="algorithm-button">Breadth First Search</button>
+                    <button onClick={() => this.visualizeDepthFirstSearch()} className="algorithm-button">Depth First Search</button>
+                    <button onClick={() => this.visualizeAStar()} className="algorithm-button">A* Search</button>
                 </div>
                 <div className="grid-functions">
-                    <button onClick={this.clearWalls.bind(this)}>Clear Walls</button>
+                    <button onClick={this.clearWalls.bind(this)} className="grid-function-button">Clear Walls</button>
+                    <button onClick={this.clearPath.bind(this)} className="grid-function-button">Clear Path</button>
                 </div>
                 {this.displayGrid(grid)}
+                <div className="credits">
+                    <a target="_blank" href="https://icons8.com/icon/62234/launch">Launch</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                    <a target="_blank" href="https://icons8.com/icon/100900/empty-flag">Empty Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                    <a target="_blank" href="https://icons8.com/icon/118838/vertical-line">Vertical Line</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                </div>
             </div>
         );
     }
 
-    // Visualize Dijkstra search algorithm.
     visualizeDijkstra() {
-        // Reset nodes to unvisited, non-path state.
         let grid = this.copyGrid();
         this.resetNodes(grid);
-        this.setState({grid: grid});
-        // Make another copy of grid to use with dijkstra algorithm.
-        grid = this.copyGrid();
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
-        const {visitedNodesInOrder, shortestPathReversed} = dijkstra(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
-        this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+        this.setState({grid: grid}, () => {
+            grid = this.copyGrid();
+            const startNode = grid[START_NODE_ROW][START_NODE_COL];
+            const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+            const {visitedNodesInOrder, shortestPathReversed} = dijkstra(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+            this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+        });
     }
 
-    // Visualize Breadth First Search algorithm.
     visualizeBreadthFirstSearch() {
-        // Reset nodes to unvisited, non-path state.
         let grid = this.copyGrid();
         this.resetNodes(grid);
-        this.setState({grid: grid});
-        // Make another copy of grid to use with dijkstra algorithm.
-        grid = this.copyGrid();
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
-        const {visitedNodesInOrder, shortestPathReversed} = breadthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
-        this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+        this.setState({grid: grid}, () => {
+            grid = this.copyGrid();
+            const startNode = grid[START_NODE_ROW][START_NODE_COL];
+            const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+            const {visitedNodesInOrder, shortestPathReversed} = breadthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+            this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+        });
     }
 
-    // Visualize Depth First Search algorithm.
     visualizeDepthFirstSearch() {
-        // Reset nodes to unvisited, non-path state.
         let grid = this.copyGrid();
         this.resetNodes(grid);
-        this.setState({grid: grid});
-        // Make another copy of grid to use with dijkstra algorithm.
-        grid = this.copyGrid();
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
-        const {visitedNodesInOrder, pathReversed} = depthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
-        this.animateSearch(visitedNodesInOrder, pathReversed);
+        this.setState({grid: grid}, () => {
+            grid = this.copyGrid();
+            const startNode = grid[START_NODE_ROW][START_NODE_COL];
+            const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+            const {visitedNodesInOrder, pathReversed} = depthFirstSearch(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+            this.animateSearch(visitedNodesInOrder, pathReversed);
+        });
     }
 
-    // Visualize A* Search algorithm.
     visualizeAStar() {
-        // Reset nodes to unvisited, non-path state.
         let grid = this.copyGrid();
         this.resetNodes(grid);
-        this.setState({grid: grid});
-        // Make another copy of grid to use with dijkstra algorithm.
-        grid = this.copyGrid();
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
-        const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
-        const {visitedNodesInOrder, shortestPathReversed} = aStar(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
-        this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+        this.setState({grid: grid}, () => {
+            grid = this.copyGrid();
+            const startNode = grid[START_NODE_ROW][START_NODE_COL];
+            const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+            const {visitedNodesInOrder, shortestPathReversed} = aStar(grid, startNode, targetNode, NUM_ROWS, NUM_COLS);
+            this.animateSearch(visitedNodesInOrder, shortestPathReversed);
+        });
     }
 
-    // Animate the discovery of nodes.
     animateSearch(visitedNodesInOrder, pathReversed) {
         for (let i = 0; i < visitedNodesInOrder.length; i++) {
             setTimeout(() => {
@@ -124,16 +121,73 @@ export default class PathfindingVisualizer extends Component {
         }
     }
 
-    // Animate the traversal of path.
     animatePath(pathReversed) {
+        const lines = this.pathToLines(pathReversed);
+        let startRow = START_NODE_ROW;
+        let startCol = START_NODE_COL;
         for (let i = pathReversed.length - 1; i >= 0; i--) {
-            setTimeout(() => {
-                const node = pathReversed[i];
-                if (!node.isStart && !node.isTarget) {
-                    document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
-                }
-            }, 1000 * ((pathReversed.length - i) / pathReversed.length));
+            startRow = pathReversed[i].row;
+            startCol = pathReversed[i].col;
+            setTimeout(
+                () => this.moveRocketShip(pathReversed, lines, i),
+                3000 * ((pathReversed.length - i) / pathReversed.length)
+            );
         }
+    }
+
+    moveRocketShip(pathReversed, lines, i) {
+        const node = pathReversed[i];
+            if (!node.isStart && !node.isTarget) {
+                const prevNode = pathReversed[i+1];
+                const grid = this.copyGrid();
+                grid[prevNode.row][prevNode.col].isStart = false;
+                grid[prevNode.row][prevNode.col].isPath = true;
+                grid[prevNode.row][prevNode.col].direction = lines[i + 1];
+                grid[node.row][node.col].isStart = true;
+                this.setState({grid: grid});
+            }
+    }
+
+    // Returns an array of lines, given a path of nodes.
+    pathToLines(pathReversed) {
+        const lines = [];
+        const directions = [];
+        directions.push('none');
+        for (let i = 1; i < pathReversed.length; i++) {
+            let prevNode = pathReversed[i-1];
+            let currNode = pathReversed[i];
+            let dRow = prevNode.row - currNode.row;
+            let dCol = currNode.col - prevNode.col;
+            const direction = 
+                dCol == 1 ? 'right':
+                dCol == -1 ? 'left':
+                dRow == 1 ? 'up':
+                dRow == -1 ? 'down':
+                '';
+            directions.push(direction);
+            const line =
+                direction == 'right' && directions[i-1] == 'none' ? 'horizontal':
+                direction == 'right' && directions[i-1] == 'right' ? 'horizontal':
+                direction == 'right' && directions[i-1] == 'up' ? 'ul':
+                direction == 'right' && directions[i-1] == 'down' ? 'bl':
+                direction == 'left' && directions[i-1] == 'none' ? 'horizontal':
+                direction == 'left' && directions[i-1] == 'left' ? 'horizontal':
+                direction == 'left' && directions[i-1] == 'up' ? 'ur':
+                direction == 'left' && directions[i-1] == 'down' ? 'br':
+                direction == 'up' && directions[i-1] == 'none' ? 'vertical':
+                direction == 'up' && directions[i-1] == 'up' ? 'vertical':
+                direction == 'up' && directions[i-1] == 'left' ? 'bl':
+                direction == 'up' && directions[i-1] == 'right' ? 'br':
+                direction == 'down' && directions[i-1] == 'none' ? 'vertical':
+                direction == 'down' && directions[i-1] == 'down' ? 'vertical':
+                direction == 'down' && directions[i-1] == 'left' ? 'ul':
+                direction == 'down' && directions[i-1] == 'right' ? 'ur':
+                '';
+            lines.push(line);
+        }
+        //TEMP
+        //lines.push('horizontal');
+        return lines;
     }
 
     // Handles onMouseDown event on node at given row and column.
@@ -191,6 +245,7 @@ export default class PathfindingVisualizer extends Component {
                                 isPath={node.isPath}
                                 row={node.row}
                                 col={node.col}
+                                direction={node.direction}
                                 handleOnMouseDown={this.handleOnMouseDown.bind(this)}
                                 handleOnMouseUp={this.handleOnMouseUp.bind(this)}
                                 handleOnMouseEnter={this.handleOnMouseEnter.bind(this)}>
@@ -202,7 +257,6 @@ export default class PathfindingVisualizer extends Component {
         );
     }
 
-    // Reset's all nodes back to an univisited, non-path state.
     resetNodes(grid) {
         for (const row of grid) {
             for (const node of row) {
@@ -214,8 +268,16 @@ export default class PathfindingVisualizer extends Component {
                 node.isPath = false;
                 node.previousNode = null;
                 node.distance = Infinity;
+                node.isStart = node.row === START_NODE_ROW && node.col === START_NODE_COL;
+                node.isTarget = node.row === TARGET_NODE_ROW && node.col === TARGET_NODE_COL;
             }
         }
+    }
+
+    clearPath() {
+        const grid = this.copyGrid();
+        this.resetNodes(grid);
+        this.setState({grid: grid});
     }
 
     clearWalls() {
@@ -256,4 +318,16 @@ function NodeObj(col, row) {
     this.distance = Infinity;
     // Previous node used to trace path.
     this.previousNode = null;
+    this.direction = null;
 }
+
+// Function to get the width of the browser window.
+function getScreenWidth() {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );
+  }

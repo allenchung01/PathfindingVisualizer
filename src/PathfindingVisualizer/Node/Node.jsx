@@ -27,19 +27,25 @@ export default class Node extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.isWall !== this.props.isWall ||
             nextProps.isVisited !== this.props.isVisited ||
-            nextProps.isPath != this.props.isPath) {
+            nextProps.isPath !== this.props.isPath ||
+            nextProps.isStart !== this.props.isStart) {
             return true;
         }
         return false;
     }
 
     render() {
-        const {isTarget, isStart, isWall, isVisited, isPath, row, col} = this.props;
+        const {isTarget, isStart, isWall, isVisited, isPath, row, col, direction} = this.props;
         const nodeType = 
-            isTarget ? 'node-finish' : 
+            isTarget ? 'node-target' : 
             isStart ? 'node-start' : 
             isWall ? 'node-wall':
-            isPath ? 'node-path':
+            isPath && direction == "horizontal" ? 'node-path-horizontal':
+            isPath && direction == "vertical" ? 'node-path-vertical':
+            isPath && direction == "ul" ? 'node-path-ul':
+            isPath && direction == "ur" ? 'node-path-ur':
+            isPath && direction == "bl" ? 'node-path-bl':
+            isPath && direction == "br" ? 'node-path-br':
             isVisited ? 'node-visited': 
             '';
         return (

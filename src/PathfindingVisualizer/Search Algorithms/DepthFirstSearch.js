@@ -9,6 +9,7 @@ export function depthFirstSearch(grid, startNode, targetNode, numRows, numCols) 
     const pathReversed = [];
     startNode.isVisited = true;
     dfs(grid, startNode, targetNode, numRows, numCols, visitedNodesInOrder, pathReversed);
+    pathReversed.push(startNode);
     return {visitedNodesInOrder, pathReversed};
 }
 

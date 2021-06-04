@@ -19,6 +19,7 @@ export function aStar(grid, startNode, targetNode, numRows, numCols) {
                 shortestPathReversed.push(pathNode);
                 pathNode = pathNode.previousNode;
             }
+            shortestPathReversed.push(pathNode);
             return {visitedNodesInOrder, shortestPathReversed};
         }
         // Get neighboring nodes and add to priority queue if unvisited.
