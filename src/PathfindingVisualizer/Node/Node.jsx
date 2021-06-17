@@ -28,15 +28,17 @@ export default class Node extends Component {
         if (nextProps.isWall !== this.props.isWall ||
             nextProps.isVisited !== this.props.isVisited ||
             nextProps.isPath !== this.props.isPath ||
-            nextProps.isStart !== this.props.isStart) {
+            nextProps.isStart !== this.props.isStart ||
+            nextProps.isTargetReached !== this.props.isTargetReached) {
             return true;
         }
         return false;
     }
 
     render() {
-        const {isTarget, isStart, isWall, isVisited, isPath, row, col, direction} = this.props;
+        const {isTarget, isStart, isWall, isVisited, isPath, row, col, direction, isTargetReached} = this.props;
         const nodeType = 
+            isTargetReached ? 'node-target-reached' :
             isTarget ? 'node-target' : 
             isStart ? 'node-start' : 
             isWall ? 'node-wall':
@@ -46,6 +48,7 @@ export default class Node extends Component {
             isPath && direction == "ur" ? 'node-path-ur':
             isPath && direction == "bl" ? 'node-path-bl':
             isPath && direction == "br" ? 'node-path-br':
+            isPath && direction == "landing-pad" ? 'node-path-landing-pad':
             isVisited ? 'node-visited': 
             '';
         return (

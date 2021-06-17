@@ -35,6 +35,7 @@ export function dijkstra (grid, startNode, targetNode, numRows, numCols) {
                 neighbor.isVisited = true;
                 priorityQueue.insert(neighbor);
             }
+            //priorityQueue.insert(neighbor);
         }
     }    
     // The target node could not be reached.

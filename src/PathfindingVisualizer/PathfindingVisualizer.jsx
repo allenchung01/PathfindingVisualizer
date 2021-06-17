@@ -137,13 +137,16 @@ export default class PathfindingVisualizer extends Component {
 
     moveRocketShip(pathReversed, lines, i) {
         const node = pathReversed[i];
-            if (!node.isStart && !node.isTarget) {
+            if (!node.isStart) {
                 const prevNode = pathReversed[i+1];
                 const grid = this.copyGrid();
                 grid[prevNode.row][prevNode.col].isStart = false;
                 grid[prevNode.row][prevNode.col].isPath = true;
                 grid[prevNode.row][prevNode.col].direction = lines[i + 1];
                 grid[node.row][node.col].isStart = true;
+                if (grid[node.row][node.col].isTarget) {
+                    grid[node.row][node.col].isTargetReached = true;
+                } 
                 this.setState({grid: grid});
             }
     }
@@ -159,34 +162,33 @@ export default class PathfindingVisualizer extends Component {
             let dRow = prevNode.row - currNode.row;
             let dCol = currNode.col - prevNode.col;
             const direction = 
-                dCol == 1 ? 'right':
-                dCol == -1 ? 'left':
-                dRow == 1 ? 'up':
-                dRow == -1 ? 'down':
+                dCol === 1 ? 'right':
+                dCol === -1 ? 'left':
+                dRow === 1 ? 'up':
+                dRow === -1 ? 'down':
                 '';
             directions.push(direction);
             const line =
-                direction == 'right' && directions[i-1] == 'none' ? 'horizontal':
-                direction == 'right' && directions[i-1] == 'right' ? 'horizontal':
-                direction == 'right' && directions[i-1] == 'up' ? 'ul':
-                direction == 'right' && directions[i-1] == 'down' ? 'bl':
-                direction == 'left' && directions[i-1] == 'none' ? 'horizontal':
-                direction == 'left' && directions[i-1] == 'left' ? 'horizontal':
-                direction == 'left' && directions[i-1] == 'up' ? 'ur':
-                direction == 'left' && directions[i-1] == 'down' ? 'br':
-                direction == 'up' && directions[i-1] == 'none' ? 'vertical':
-                direction == 'up' && directions[i-1] == 'up' ? 'vertical':
-                direction == 'up' && directions[i-1] == 'left' ? 'bl':
-                direction == 'up' && directions[i-1] == 'right' ? 'br':
-                direction == 'down' && directions[i-1] == 'none' ? 'vertical':
-                direction == 'down' && directions[i-1] == 'down' ? 'vertical':
-                direction == 'down' && directions[i-1] == 'left' ? 'ul':
-                direction == 'down' && directions[i-1] == 'right' ? 'ur':
+                direction === 'right' && directions[i-1] === 'none' ? 'horizontal':
+                direction === 'right' && directions[i-1] === 'right' ? 'horizontal':
+                direction === 'right' && directions[i-1] === 'up' ? 'ul':
+                direction === 'right' && directions[i-1] === 'down' ? 'bl':
+                direction === 'left' && directions[i-1] === 'none' ? 'horizontal':
+                direction === 'left' && directions[i-1] === 'left' ? 'horizontal':
+                direction === 'left' && directions[i-1] === 'up' ? 'ur':
+                direction === 'left' && directions[i-1] === 'down' ? 'br':
+                direction === 'up' && directions[i-1] === 'none' ? 'vertical':
+                direction === 'up' && directions[i-1] === 'up' ? 'vertical':
+                direction === 'up' && directions[i-1] === 'left' ? 'bl':
+                direction === 'up' && directions[i-1] === 'right' ? 'br':
+                direction === 'down' && directions[i-1] === 'none' ? 'vertical':
+                direction === 'down' && directions[i-1] === 'down' ? 'vertical':
+                direction === 'down' && directions[i-1] === 'left' ? 'ul':
+                direction === 'down' && directions[i-1] === 'right' ? 'ur':
                 '';
             lines.push(line);
         }
-        //TEMP
-        //lines.push('horizontal');
+        lines.push('landing-pad');
         return lines;
     }
 
@@ -246,6 +248,7 @@ export default class PathfindingVisualizer extends Component {
                                 row={node.row}
                                 col={node.col}
                                 direction={node.direction}
+                                isTargetReached={node.isTargetReached}
                                 handleOnMouseDown={this.handleOnMouseDown.bind(this)}
                                 handleOnMouseUp={this.handleOnMouseUp.bind(this)}
                                 handleOnMouseEnter={this.handleOnMouseEnter.bind(this)}>
@@ -270,6 +273,7 @@ export default class PathfindingVisualizer extends Component {
                 node.distance = Infinity;
                 node.isStart = node.row === START_NODE_ROW && node.col === START_NODE_COL;
                 node.isTarget = node.row === TARGET_NODE_ROW && node.col === TARGET_NODE_COL;
+                node.isTargetReached = false;
             }
         }
     }
@@ -319,6 +323,7 @@ function NodeObj(col, row) {
     // Previous node used to trace path.
     this.previousNode = null;
     this.direction = null;
+    this.isTargetReached = false;
 }
 
 // Function to get the width of the browser window.

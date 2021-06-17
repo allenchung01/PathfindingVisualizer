@@ -14,7 +14,7 @@ export function aStar(grid, startNode, targetNode, numRows, numCols) {
         visitedNodesInOrder.push(node);
         if (node === targetNode) {
             // The target Node was discovered.
-            let pathNode = node.previousNode;
+            let pathNode = node;
             while (pathNode !== startNode) {
                 shortestPathReversed.push(pathNode);
                 pathNode = pathNode.previousNode;
