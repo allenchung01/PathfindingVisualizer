@@ -121,7 +121,8 @@ export default class PathfindingVisualizer extends Component {
               www.flaticon.com
             </a>
           </div>
-    </div>*/}
+    </div>
+    <div>Icons made by <a href="" title="Vitaly Gorbachev">Vitaly Gorbachev</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/}
       </div>
     );
   }
@@ -426,7 +427,7 @@ export default class PathfindingVisualizer extends Component {
     for (const row of grid) {
       for (const node of row) {
         // We have to reset isVisited, and isPath of nodes the same way we set them.
-        if (!node.isWall && !node.isStart && !node.isTarget) {
+        if (!node.isWall && !node.isStart && !node.isTarget && !node.isWeight) {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node";
         }

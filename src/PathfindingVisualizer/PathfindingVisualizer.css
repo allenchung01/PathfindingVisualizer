@@ -1,7 +1,15 @@
 @font-face {
   font-family: Jost;
   src: url("./Fonts/Jost-VariableFont_wght.ttf");
+  /*font-weight: 460;*/
   font-weight: 460;
+}
+
+@font-face {
+  font-family: Jost-Bold;
+  src: url("./Fonts/Jost-VariableFont_wght.ttf");
+  /*font-weight: 460;*/
+  font-weight: 600;
 }
 /*
 @font-face {
@@ -15,6 +23,13 @@
   padding: 0;
   font-family: Jost;
   color: rgb(64, 64, 64);
+
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -24,6 +39,13 @@ body {
 
 .grid {
   display: inline-block;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 .row {
@@ -77,29 +99,4 @@ body {
 
 a {
   color: lightskyblue;
-}
-
-#bottom-left-fixed {
-  z-index: 10;
-  position: fixed;
-  top: 100%;
-  transform: translateY(-100%);
-  padding: 0 0 20px 20px;
-}
-
-#big-algorithm-name {
-  display: inline-block;
-  line-height: 100%;
-  font-size: 60pt;
-  pointer-events: none;
-  margin-right: 10px;
-}
-
-.info-icon {
-  display: inline-block;
-  background-image: url("./Images/information\ \(1\).png");
-  background-size: contain;
-  width: 14px;
-  height: 14px;
-  vertical-align: top;
 }
