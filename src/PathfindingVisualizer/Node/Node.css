@@ -188,6 +188,20 @@ don't change during resizing animations */
   animation-play-state: running;
 }
 
+.node-weight {
+  background-image: url("../Images/weights.svg");
+  background-size: contain;
+  background-color: white;
+  animation-name: wallAnimation;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
 @keyframes isVisited {
   0% {
     background-color: rgb(72, 191, 255);

@@ -1,11 +1,35 @@
+#container {
+  vertical-align: bottom;
+}
+
+#brushes-img {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px 0 0;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.05);
+}
+
 .toggle {
+  display: inline-block;
   border-radius: 10px;
   overflow: hidden;
-  vertical-align: top;
+  vertical-align: middle;
   box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.05);
 }
 
 .toggle button {
   border-radius: 0;
   box-shadow: none;
+}
+
+.toggle .selected {
+}
+
+.toggle .unselected {
+  color: rgb(212, 212, 212);
 }

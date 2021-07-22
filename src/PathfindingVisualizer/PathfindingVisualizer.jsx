@@ -27,6 +27,9 @@ const BFS = "BFS";
 const DFS = "DFS";
 const ASTAR = "A*";
 
+const WALLS = "Walls";
+const WEIGHTS = "Weights";
+
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +37,7 @@ export default class PathfindingVisualizer extends Component {
       grid: [],
       mouseDown: false,
       algorithm: DIJKSTRA,
+      drawMode: WALLS,
     };
   }
 
@@ -74,7 +78,11 @@ export default class PathfindingVisualizer extends Component {
           <button onClick={this.clearWalls.bind(this)} id="clear-walls-button">
             Clear Walls
           </button>
-          <DrawToggle />
+          <DrawToggle
+            setDrawMode={(mode) => {
+              this.setState({ drawMode: mode });
+            }}
+          />
         </NavigationBar>
 
         {this.displayGrid(grid)}
@@ -322,8 +330,20 @@ export default class PathfindingVisualizer extends Component {
   handleOnMouseDown(row, col) {
     const grid = this.copyGrid();
     const node = grid[row][col];
-    node.isWall = !node.isWall;
-    this.setState({ grid: grid, mouseDown: true });
+    switch (this.state.drawMode) {
+      case WALLS:
+        node.isWall = !node.isWall;
+        node.isWeight = false;
+        this.setState({ grid: grid, mouseDown: true });
+        break;
+      case WEIGHTS:
+        node.isWeight = !node.isWeight;
+        node.isWall = false;
+        this.setState({ grid: grid, mouseDown: true });
+        break;
+      default:
+        return;
+    }
   }
 
   handleOnMouseUp() {
@@ -336,8 +356,20 @@ export default class PathfindingVisualizer extends Component {
     if (this.state.mouseDown === true) {
       const grid = this.copyGrid();
       const node = grid[row][col];
-      node.isWall = !node.isWall;
-      this.setState({ grid: grid });
+      switch (this.state.drawMode) {
+        case WALLS:
+          node.isWall = !node.isWall;
+          node.isWeight = false;
+          this.setState({ grid: grid });
+          break;
+        case WEIGHTS:
+          node.isWeight = !node.isWeight;
+          node.isWall = false;
+          this.setState({ grid: grid });
+          break;
+        default:
+          return;
+      }
     }
   }
 
@@ -370,6 +402,7 @@ export default class PathfindingVisualizer extends Component {
                     isStart={node.isStart}
                     isTarget={node.isTarget}
                     isWall={node.isWall}
+                    isWeight={node.isWeight}
                     isVisited={node.isVisited}
                     isPath={node.isPath}
                     row={node.row}
@@ -450,6 +483,7 @@ function NodeObj(col, row) {
   this.isTarget = row === TARGET_NODE_ROW && col === TARGET_NODE_COL;
   this.isVisited = false;
   this.isWall = false;
+  this.isWeight = false;
   // Distance from start node.
   this.distance = Infinity;
   // Previous node used to trace path.
