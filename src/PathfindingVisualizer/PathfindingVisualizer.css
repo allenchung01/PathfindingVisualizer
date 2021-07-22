@@ -1,63 +1,105 @@
+@font-face {
+  font-family: Jost;
+  src: url("./Fonts/Jost-VariableFont_wght.ttf");
+  font-weight: 460;
+}
+/*
+@font-face {
+  font-family: Jost-Bold;
+  src: url("./Fonts/Jost-VariableFont_wght.ttf");
+  font-weight: 500;
+}
+*/
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Jost;
+  color: rgb(64, 64, 64);
+}
+
 body {
-    background-color: rgb(18, 25, 34);
+  /*background-color: rgb(18, 25, 34);*/
+  background-color: white;
 }
 
 .grid {
-    margin: 20px 0 20px 0;
+  display: inline-block;
 }
 
 .row {
-    margin: 0px;
-    padding: 0px;
-    height: 28px;
+  margin: 0px;
+  padding: 0px;
+  height: 30px;
 }
 
 .search-algorithms {
-    margin-top: 0;
-    margin-bottom: 0;
-    background-color: whitesmoke;
+  background-color: white;
 }
 
 .grid-functions {
-    margin-bottom: 20px;
-    background-color: whitesmoke;
-    border-style: solid;
-    border-bottom: 0;
-    border-top: solid 1px rgb(231, 231, 231);
-    border-left: 0;
-    border-right: 0;
+  margin-bottom: 20px;
+  background-color: white;
+  border-style: solid;
+  border-bottom: 0;
+  border-top: solid 1px rgb(231, 231, 231);
+  border-left: 0;
+  border-right: 0;
 }
 
-.algorithm-button {
-    color: rgb(18, 25, 34);
-    background-color: whitesmoke;
-    font-weight: bold;
-    padding:20px;
-    border: none
+.algorithm-buttons {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 20px;
 }
 
 .grid-function-button {
-    color: rgb(18, 25, 34);
-    background-color: whitesmoke;
-    font-weight: bold;
-    font-size:x-small;
-    padding:10px;
-    border: none
+  background-color: white;
+  font-weight: bold;
+  font-size: x-small;
+  padding: 10px;
+  border: none;
 }
 
 .algorithm-button:hover {
-    color: rgb(77, 107, 187);
+  color: rgb(77, 107, 187);
 }
 
 .grid-function-button:hover {
-    color: rgb(77, 107, 187);
+  color: rgb(77, 107, 187);
 }
 
 .credits {
-    padding: 20px;
-    background-color: whitesmoke;
+  padding: 20px;
+  background-color: whitesmoke;
 }
 
 a {
-    color: lightskyblue;
+  color: lightskyblue;
+}
+
+#bottom-left-fixed {
+  z-index: 10;
+  position: fixed;
+  top: 100%;
+  transform: translateY(-100%);
+  padding: 0 0 20px 20px;
+}
+
+#big-algorithm-name {
+  display: inline-block;
+  line-height: 100%;
+  font-size: 60pt;
+  pointer-events: none;
+  margin-right: 10px;
+}
+
+.info-icon {
+  display: inline-block;
+  background-image: url("./Images/information\ \(1\).png");
+  background-size: contain;
+  width: 14px;
+  height: 14px;
+  vertical-align: top;
 }

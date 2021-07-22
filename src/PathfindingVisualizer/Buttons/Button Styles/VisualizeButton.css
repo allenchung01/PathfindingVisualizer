@@ -1,0 +1,8 @@
+#visualize-button {
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(72, 191, 255);
+  box-shadow: -3px 3px 16px 4px rgba(57, 153, 204, 0.2);
+  color: white;
+  margin-right: 100px;
+}

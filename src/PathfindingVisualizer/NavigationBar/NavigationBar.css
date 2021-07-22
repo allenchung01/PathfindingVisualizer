@@ -1,0 +1,35 @@
+.navigation-bar {
+  position: fixed;
+  z-index: 10;
+  margin: 20px;
+}
+.navigation-bar button {
+  background-color: white;
+  font-size: 10pt;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.05);
+}
+
+.navigation-bar button:hover {
+  animation-name: scaleEffect;
+  animation-duration: 1.2s;
+}
+
+.navigation-bar > * {
+  margin-right: 20px;
+  display: inline-block;
+}
+
+@keyframes scaleEffect {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

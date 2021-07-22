@@ -1,0 +1,36 @@
+#bottom-left-fixed {
+  z-index: 10;
+  position: fixed;
+  top: 100%;
+  transform: translateY(-100%);
+  padding: 0 0 20px 20px;
+}
+
+#big-algorithm-name {
+  display: inline-block;
+  line-height: 100%;
+  font-size: 60pt;
+  pointer-events: none;
+  margin-right: 10px;
+}
+
+.info-icon {
+  display: inline-block;
+  background-image: url("../Images/information\ \(1\).png");
+  background-size: contain;
+  width: 14px;
+  height: 14px;
+  vertical-align: top;
+}
+
+.info-popup {
+  width: 200px;
+  background-color: white;
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.05);
+}
