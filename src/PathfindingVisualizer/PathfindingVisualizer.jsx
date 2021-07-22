@@ -17,7 +17,7 @@ import "./PathfindingVisualizer.css";
 const NUM_ROWS = Math.floor(getScreenHeight() / 30);
 const NUM_COLS = Math.floor(getScreenWidth() / 30);
 
-const START_NODE_ROW = 1;
+const START_NODE_ROW = 5;
 const START_NODE_COL = 1;
 const TARGET_NODE_ROW = NUM_ROWS - 2;
 const TARGET_NODE_COL = NUM_COLS - 2;
@@ -70,8 +70,10 @@ export default class PathfindingVisualizer extends Component {
           >
             Go
           </button>
-          <button>Clear Path</button>
-          <button id="clear-walls-button">Clear Walls</button>
+          <button onClick={this.clearPath.bind(this)}>Clear Path</button>
+          <button onClick={this.clearWalls.bind(this)} id="clear-walls-button">
+            Clear Walls
+          </button>
           <DrawToggle />
         </NavigationBar>
 
