@@ -170,26 +170,72 @@ export default class PathfindingVisualizer extends Component {
 
   // Used to disply disjkstra when moving launch pad,
   // instead of fully animating dijkstra.
-  displayDijkstra() {
+  redrawPath() {
     let grid = this.copyGrid();
     const startNode = grid[this.state.launchPadRow][this.state.launchPadCol];
     const targetNode = grid[this.state.targetNodeRow][this.state.targetNodeCol];
-    const { shortestPathReversed } = dijkstra(
+
+    var pathReversed;
+
+    switch (this.state.algorithm) {
+      case DIJKSTRA:
+        pathReversed = dijkstra(
+          grid,
+          startNode,
+          targetNode,
+          NUM_ROWS,
+          NUM_COLS,
+          this.state.weightValue
+        ).shortestPathReversed;
+        break;
+      case BFS:
+        pathReversed = breadthFirstSearch(
+          grid,
+          startNode,
+          targetNode,
+          NUM_ROWS,
+          NUM_COLS
+        ).shortestPathReversed;
+        break;
+      case DFS:
+        pathReversed = depthFirstSearch(
+          grid,
+          startNode,
+          targetNode,
+          NUM_ROWS,
+          NUM_COLS
+        ).pathReversed;
+        break;
+      case ASTAR:
+        pathReversed = aStar(
+          grid,
+          startNode,
+          targetNode,
+          NUM_ROWS,
+          NUM_COLS,
+          this.state.weightValue
+        ).shortestPathReversed;
+        break;
+      default:
+        return;
+    }
+
+    /*const { shortestPathReversed } = dijkstra(
       grid,
       startNode,
       targetNode,
       NUM_ROWS,
       NUM_COLS,
       this.state.weightValue
-    );
+    );*/
 
-    const lines = this.pathToLines(shortestPathReversed);
+    const lines = this.pathToLines(pathReversed);
 
     grid = this.copyGrid();
 
-    for (let i = 0; i < shortestPathReversed.length; i++) {
-      const row = shortestPathReversed[i].row;
-      const col = shortestPathReversed[i].col;
+    for (let i = 0; i < pathReversed.length; i++) {
+      const row = pathReversed[i].row;
+      const col = pathReversed[i].col;
       grid[row][col].direction = lines[i];
       grid[row][col].isPath = true;
     }
@@ -486,7 +532,7 @@ export default class PathfindingVisualizer extends Component {
             startNodeCol: col,
           },
           // ReDraw path.
-          this.displayDijkstra
+          this.redrawPath
         );
         return;
       }
