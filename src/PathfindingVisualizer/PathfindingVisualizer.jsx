@@ -228,8 +228,11 @@ export default class PathfindingVisualizer extends Component {
         } else {
           if (!node.isStart && !node.isTarget) {
             // Normally shouldn't do this, but had to to optimize performance.
-            document.getElementById(`node-${node.row}-${node.col}`).className =
-              "node node-visited";
+            const element = document.getElementById(
+              `node-${node.row}-${node.col}`
+            );
+            element.classList.remove("unvisited");
+            element.classList.add("visited");
           }
         }
       }, 5 * i);
@@ -430,6 +433,9 @@ export default class PathfindingVisualizer extends Component {
         if (!node.isWall && !node.isStart && !node.isTarget && !node.isWeight) {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node";
+        } else if (node.isWeight) {
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-weight unvisited";
         }
         node.isVisited = false;
         node.isPath = false;

@@ -52,7 +52,11 @@ don't change during resizing animations */
   background-position: center center;
 }
 
-.node-visited {
+.unvisited {
+  background-color: white;
+}
+
+.visited {
   animation-name: isVisited;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
@@ -201,6 +205,14 @@ don't change during resizing animations */
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
+}
+
+.node-weight.unvisited {
+  background-color: white;
+}
+
+.node-weight.visited {
+  background-color: whitesmoke;
 }
 
 @keyframes isVisited {

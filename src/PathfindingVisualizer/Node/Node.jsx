@@ -75,8 +75,6 @@ export default class Node extends Component {
       ? "node-path-br"
       : isPath && direction == "landing-pad"
       ? "node-path-landing-pad"
-      : isVisited
-      ? "node-visited"
       : "";
     return (
       <div
@@ -88,7 +86,10 @@ export default class Node extends Component {
         onMouseUp={this.handleOnMouseUp.bind(this)}
         onMouseEnter={this.handleOnMouseEnter.bind(this)}
       >
-        <div className={`node ${nodeType}`} id={`node-${row}-${col}`}></div>
+        <div
+          className={`node ${nodeType} ${isVisited ? "visited" : "unvisited"}`}
+          id={`node-${row}-${col}`}
+        ></div>
       </div>
     );
   }
