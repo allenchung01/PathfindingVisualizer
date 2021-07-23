@@ -27,7 +27,8 @@
   box-shadow: none;
 }
 
-.toggle .selected {
+.toggle button:active {
+  box-shadow: none;
 }
 
 .toggle .unselected {
