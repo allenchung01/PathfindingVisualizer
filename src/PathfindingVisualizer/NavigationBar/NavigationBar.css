@@ -3,6 +3,7 @@
   z-index: 10;
   margin: 20px;
   pointer-events: none;
+  font-size: 10pt;
 }
 .navigation-bar button {
   pointer-events: all;

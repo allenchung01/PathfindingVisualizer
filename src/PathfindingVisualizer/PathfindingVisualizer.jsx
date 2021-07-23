@@ -4,6 +4,7 @@ import Node from "./Node/Node";
 import DropdownMenu from "./Buttons/DropdownMenu/DropdownMenu";
 import NavigationBar from "./NavigationBar/NavigationBar";
 import DrawToggle from "./Buttons/DrawToggle/DrawToggle";
+import Slider from "./Buttons/Slider/Slider";
 import { AlgorithmTitle } from "./AlgorithmTitle/AlgorithmTitle";
 import "./Buttons/Button Styles/VisualizeButton.css";
 import { dijkstra } from "./Search Algorithms/Dijkstra";
@@ -43,6 +44,7 @@ export default class PathfindingVisualizer extends Component {
       drawMode: WALLS,
       movingStart: false,
       movingTarget: false,
+      weightValue: 5,
     };
   }
 
@@ -92,6 +94,10 @@ export default class PathfindingVisualizer extends Component {
               this.setState({ drawMode: mode });
             }}
           />
+          <Slider
+            value={this.state.weightValue}
+            setValue={this.setWeightValue.bind(this)}
+          />
         </NavigationBar>
 
         {this.displayGrid(grid)}
@@ -136,6 +142,10 @@ export default class PathfindingVisualizer extends Component {
     );
   }
 
+  setWeightValue(value) {
+    this.setState({ weightValue: value });
+  }
+
   visualize(algorithm) {
     switch (algorithm) {
       case DIJKSTRA:
@@ -168,7 +178,8 @@ export default class PathfindingVisualizer extends Component {
         startNode,
         targetNode,
         NUM_ROWS,
-        NUM_COLS
+        NUM_COLS,
+        this.state.weightValue
       );
       this.animateSearch(visitedNodesInOrder, shortestPathReversed);
     });
@@ -225,7 +236,8 @@ export default class PathfindingVisualizer extends Component {
         startNode,
         targetNode,
         NUM_ROWS,
-        NUM_COLS
+        NUM_COLS,
+        this.state.weightValue
       );
       this.animateSearch(visitedNodesInOrder, shortestPathReversed);
     });

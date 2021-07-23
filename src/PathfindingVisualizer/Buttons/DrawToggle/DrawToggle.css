@@ -1,8 +1,11 @@
 #container {
   vertical-align: bottom;
+  margin-right: 100px;
 }
 
 #brushes-img {
+  pointer-events: all;
+  cursor: auto;
   position: relative;
   z-index: 1;
   display: inline-block;

@@ -4,7 +4,14 @@ import { getNeighbors } from "./SearchHelperFunctions";
 // Use dijkstra's algorithm to find the shortest path from 'startNode' to
 //'targetNode' in 'grid'. Return an array of the visited nodes in order as
 // well as the shortest path in reversed order.
-export function dijkstra(grid, startNode, targetNode, numRows, numCols) {
+export function dijkstra(
+  grid,
+  startNode,
+  targetNode,
+  numRows,
+  numCols,
+  weightValue
+) {
   startNode.distance = 0;
   const priorityQueue = new MinHeap();
   const visitedNodesInOrder = [];
@@ -25,7 +32,7 @@ export function dijkstra(grid, startNode, targetNode, numRows, numCols) {
     }
     const neighbors = getNeighbors(node, numRows, numCols, grid);
     for (const neighbor of neighbors) {
-      const weight = neighbor.isWeight ? 5 : 1;
+      const weight = neighbor.isWeight ? weightValue : 1;
       // Only update distance of neighbors if path results in lower distance.
       if (node.distance + weight < neighbor.distance) {
         neighbor.distance = node.distance + weight;

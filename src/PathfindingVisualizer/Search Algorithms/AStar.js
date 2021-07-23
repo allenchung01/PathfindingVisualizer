@@ -1,6 +1,13 @@
 import { getNeighbors } from "./SearchHelperFunctions";
 
-export function aStar(grid, startNode, targetNode, numRows, numCols) {
+export function aStar(
+  grid,
+  startNode,
+  targetNode,
+  numRows,
+  numCols,
+  weightValue
+) {
   const priorityQueue = new MinHeap(targetNode);
   const visitedNodesInOrder = [];
   const shortestPathReversed = [];
@@ -25,7 +32,7 @@ export function aStar(grid, startNode, targetNode, numRows, numCols) {
     // Get neighboring nodes and add to priority queue if unvisited.
     const neighbors = getNeighbors(node, numRows, numCols, grid);
     for (const neighbor of neighbors) {
-      const weight = neighbor.isWeight ? 5 : 1;
+      const weight = neighbor.isWeight ? weightValue : 1;
       if (!neighbor.isVisited) {
         // Update the neighbor's distance.
         neighbor.distance = node.distance + weight;
