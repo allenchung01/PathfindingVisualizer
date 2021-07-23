@@ -1,3 +1,7 @@
+#weight-slider-section {
+  position: relative;
+}
+
 .slider-container {
   pointer-events: all;
   display: inline-block;
