@@ -31,7 +31,8 @@ export default class Node extends Component {
       nextProps.isPath !== this.props.isPath ||
       nextProps.isStart !== this.props.isStart ||
       nextProps.isTargetReached !== this.props.isTargetReached ||
-      nextProps.isWeight !== this.props.isWeight
+      nextProps.isWeight !== this.props.isWeight ||
+      nextProps.isTarget !== this.props.isTarget
     ) {
       return true;
     }

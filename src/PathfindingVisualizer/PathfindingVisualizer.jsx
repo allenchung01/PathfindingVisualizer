@@ -34,9 +34,15 @@ export default class PathfindingVisualizer extends Component {
     super(props);
     this.state = {
       grid: [],
+      startNodeRow: START_NODE_ROW,
+      startNodeCol: START_NODE_COL,
+      targetNodeRow: TARGET_NODE_ROW,
+      targetNodeCol: TARGET_NODE_COL,
       mouseDown: false,
       algorithm: DIJKSTRA,
       drawMode: WALLS,
+      movingStart: false,
+      movingTarget: false,
     };
   }
 
@@ -154,8 +160,9 @@ export default class PathfindingVisualizer extends Component {
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
       grid = this.copyGrid();
-      const startNode = grid[START_NODE_ROW][START_NODE_COL];
-      const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
+      const targetNode =
+        grid[this.state.targetNodeRow][this.state.targetNodeCol];
       const { visitedNodesInOrder, shortestPathReversed } = dijkstra(
         grid,
         startNode,
@@ -172,8 +179,9 @@ export default class PathfindingVisualizer extends Component {
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
       grid = this.copyGrid();
-      const startNode = grid[START_NODE_ROW][START_NODE_COL];
-      const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
+      const targetNode =
+        grid[this.state.targetNodeRow][this.state.targetNodeCol];
       const { visitedNodesInOrder, shortestPathReversed } = breadthFirstSearch(
         grid,
         startNode,
@@ -190,8 +198,9 @@ export default class PathfindingVisualizer extends Component {
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
       grid = this.copyGrid();
-      const startNode = grid[START_NODE_ROW][START_NODE_COL];
-      const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
+      const targetNode =
+        grid[this.state.targetNodeRow][this.state.targetNodeCol];
       const { visitedNodesInOrder, pathReversed } = depthFirstSearch(
         grid,
         startNode,
@@ -208,8 +217,9 @@ export default class PathfindingVisualizer extends Component {
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
       grid = this.copyGrid();
-      const startNode = grid[START_NODE_ROW][START_NODE_COL];
-      const targetNode = grid[TARGET_NODE_ROW][TARGET_NODE_COL];
+      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
+      const targetNode =
+        grid[this.state.targetNodeRow][this.state.targetNodeCol];
       const { visitedNodesInOrder, shortestPathReversed } = aStar(
         grid,
         startNode,
@@ -244,8 +254,8 @@ export default class PathfindingVisualizer extends Component {
 
   animatePath(pathReversed) {
     const lines = this.pathToLines(pathReversed);
-    let startRow = START_NODE_ROW;
-    let startCol = START_NODE_COL;
+    let startRow = this.state.startNodeRow;
+    let startCol = this.state.startNodeCol;
     for (let i = pathReversed.length - 1; i >= 0; i--) {
       startRow = pathReversed[i].row;
       startCol = pathReversed[i].col;
@@ -337,6 +347,16 @@ export default class PathfindingVisualizer extends Component {
   handleOnMouseDown(row, col) {
     const grid = this.copyGrid();
     const node = grid[row][col];
+    // Start moving start node or target node.
+    if (node.isStart) {
+      this.setState({ movingStart: true, mouseDown: true });
+      return;
+    }
+    if (node.isTarget) {
+      this.setState({ movingTarget: true, mouseDown: true });
+      return;
+    }
+    // Start drawing walls or weights no the node.
     switch (this.state.drawMode) {
       case WALLS:
         node.isWall = !node.isWall;
@@ -355,7 +375,11 @@ export default class PathfindingVisualizer extends Component {
 
   handleOnMouseUp() {
     if (this.state.mouseDown === true) {
-      this.setState({ mouseDown: false });
+      this.setState({
+        mouseDown: false,
+        movingStart: false,
+        movingTarget: false,
+      });
     }
   }
 
@@ -363,6 +387,23 @@ export default class PathfindingVisualizer extends Component {
     if (this.state.mouseDown === true) {
       const grid = this.copyGrid();
       const node = grid[row][col];
+      if (this.state.movingStart) {
+        const prevStart =
+          grid[this.state.startNodeRow][this.state.startNodeCol];
+        prevStart.isStart = false;
+        node.isStart = true;
+        this.setState({ grid: grid, startNodeRow: row, startNodeCol: col });
+        return;
+      }
+      if (this.state.movingTarget) {
+        const prevTarget =
+          grid[this.state.targetNodeRow][this.state.targetNodeCol];
+        prevTarget.isTarget = false;
+        node.isTarget = true;
+        this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
+        return;
+      }
+
       switch (this.state.drawMode) {
         case WALLS:
           node.isWall = !node.isWall;
@@ -387,6 +428,17 @@ export default class PathfindingVisualizer extends Component {
       const currentRow = [];
       for (let col = 0; col < NUM_COLS; col++) {
         const currNode = new NodeObj(col, row);
+        if (
+          row === this.state.startNodeRow &&
+          col === this.state.startNodeCol
+        ) {
+          currNode.isStart = true;
+        } else if (
+          row === this.state.targetNodeRow &&
+          col === this.state.targetNodeCol
+        ) {
+          currNode.isTarget = true;
+        }
         currentRow.push(currNode);
       }
       grid.push(currentRow);
@@ -445,9 +497,11 @@ export default class PathfindingVisualizer extends Component {
         node.previousNode = null;
         node.distance = Infinity;
         node.isStart =
-          node.row === START_NODE_ROW && node.col === START_NODE_COL;
+          node.row === this.state.startNodeRow &&
+          node.col === this.state.startNodeCol;
         node.isTarget =
-          node.row === TARGET_NODE_ROW && node.col === TARGET_NODE_COL;
+          node.row === this.state.targetNodeRow &&
+          node.col === this.state.targetNodeCol;
         node.isTargetReached = false;
       }
     }
@@ -501,8 +555,8 @@ export default class PathfindingVisualizer extends Component {
 function NodeObj(col, row) {
   this.col = col;
   this.row = row;
-  this.isStart = row === START_NODE_ROW && col === START_NODE_COL;
-  this.isTarget = row === TARGET_NODE_ROW && col === TARGET_NODE_COL;
+  this.isStart = false;
+  this.isTarget = false;
   this.isVisited = false;
   this.isWall = false;
   this.isWeight = false;

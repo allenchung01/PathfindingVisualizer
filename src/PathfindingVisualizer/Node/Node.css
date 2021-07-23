@@ -22,6 +22,7 @@ don't change during resizing animations */
 }
 
 .node-target {
+  cursor: grab;
   background-image: url("../Images/icons8-empty-flag-90.png");
   background-repeat: no-repeat;
   background-size: 26px;
@@ -46,6 +47,7 @@ don't change during resizing animations */
 }
 
 .node-start {
+  cursor: grab;
   background-image: url("../Images/icons8-launch-90.png");
   background-repeat: no-repeat;
   background-size: 28px;
