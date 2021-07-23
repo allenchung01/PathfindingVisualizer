@@ -7,7 +7,7 @@
   border-bottom: 1px solid rgb(230, 230, 230);
   border-right: 1px solid rgb(230, 230, 230);
   box-sizing: border-box;
-  background-color: #ffffff;
+  background-color: whitesmoke;
   /*background-color: rgb(28, 38, 56);*/
 }
 
@@ -17,7 +17,7 @@ don't change during resizing animations */
   width: 30px;
   height: 30px;
   display: inline-block;
-  background-color: white;
+  background-color: whitesmoke;
   cursor: url("../Images/paintbrush.svg") -40 40, pointer;
 }
 
@@ -53,7 +53,7 @@ don't change during resizing animations */
 }
 
 .unvisited {
-  background-color: white;
+  background-color: whitesmoke;
 }
 
 .visited {
@@ -208,7 +208,7 @@ don't change during resizing animations */
 }
 
 .node-weight.unvisited {
-  background-color: white;
+  background-color: whitesmoke;
 }
 
 .node-weight.visited {
