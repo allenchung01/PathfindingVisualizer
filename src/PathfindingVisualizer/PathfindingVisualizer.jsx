@@ -493,12 +493,34 @@ export default class PathfindingVisualizer extends Component {
       const node = grid[row][col];
       // Move target node.
       if (this.state.movingTarget) {
+        // Remove path.
+        for (const row of grid) {
+          for (var node_ of row) {
+            node_.isPath = false;
+            node_.direction = null;
+            node_.isVisited = false;
+          }
+        }
+        // Move target node.
         const prevTarget =
           grid[this.state.targetNodeRow][this.state.targetNodeCol];
         prevTarget.isTarget = false;
+        prevTarget.isTargetReached = false;
+        prevTarget.isStart = false;
         node.isTarget = true;
-        this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
+        // Set state.
+        this.setState(
+          {
+            grid: grid,
+            targetNodeRow: row,
+            targetNodeCol: col,
+          },
+          // ReDraw path.
+          this.redrawPath
+        );
         return;
+        /*this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
+        return;*/
       }
       // Move launch pad.
       if (this.state.movingLaunchPad) {

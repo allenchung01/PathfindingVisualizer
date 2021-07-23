@@ -30,6 +30,7 @@ don't change during resizing animations */
 }
 
 .node-target-reached {
+  cursor: grab;
   background-color: whitesmoke;
   animation-name: nodeTargetReached;
   overflow: hidden;
