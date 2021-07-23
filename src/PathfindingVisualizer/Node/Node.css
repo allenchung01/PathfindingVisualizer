@@ -18,7 +18,7 @@ don't change during resizing animations */
   height: 30px;
   display: inline-block;
   background-color: whitesmoke;
-  cursor: url("../Images/paintbrush.svg") -40 40, pointer;
+  cursor: url("../Images/paintbrush.svg") 0 19, pointer;
 }
 
 .node-target {

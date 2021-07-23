@@ -66,3 +66,15 @@
   border-radius: 10px;
   box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.05);
 }
+
+@keyframes scaleEffect {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
