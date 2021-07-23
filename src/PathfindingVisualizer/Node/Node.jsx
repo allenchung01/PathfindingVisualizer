@@ -32,11 +32,12 @@ export default class Node extends Component {
       nextProps.isStart !== this.props.isStart ||
       nextProps.isTargetReached !== this.props.isTargetReached ||
       nextProps.isWeight !== this.props.isWeight ||
-      nextProps.isTarget !== this.props.isTarget
+      nextProps.isTarget !== this.props.isTarget ||
+      nextProps.direction !== this.props.direction
     ) {
       return true;
     }
-    return false;
+    return true;
   }
 
   render() {
@@ -54,6 +55,8 @@ export default class Node extends Component {
     } = this.props;
     const nodeType = isTargetReached
       ? "node-target-reached"
+      : isPath && direction == "landing-pad"
+      ? "node-path-landing-pad"
       : isTarget
       ? "node-target"
       : isStart
@@ -74,8 +77,6 @@ export default class Node extends Component {
       ? "node-path-bl"
       : isPath && direction == "br"
       ? "node-path-br"
-      : isPath && direction == "landing-pad"
-      ? "node-path-landing-pad"
       : "";
     return (
       <div

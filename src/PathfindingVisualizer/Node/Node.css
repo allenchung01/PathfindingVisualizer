@@ -166,6 +166,7 @@ don't change during resizing animations */
 }
 
 .node-path-landing-pad {
+  cursor: grab;
   background-color: whitesmoke;
   background-image: url(../Images/landing-pad.png);
   background-repeat: no-repeat;

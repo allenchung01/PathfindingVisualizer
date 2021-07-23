@@ -44,7 +44,10 @@ export default class PathfindingVisualizer extends Component {
       drawMode: WALLS,
       movingStart: false,
       movingTarget: false,
+      movingLaunchPad: false,
       weightValue: 5,
+      launchPadRow: null,
+      launchPadCol: null,
     };
   }
 
@@ -163,6 +166,34 @@ export default class PathfindingVisualizer extends Component {
       default:
         return;
     }
+  }
+
+  // Used to disply disjkstra when moving launch pad,
+  // instead of fully animating dijkstra.
+  displayDijkstra() {
+    let grid = this.copyGrid();
+    const startNode = grid[this.state.launchPadRow][this.state.launchPadCol];
+    const targetNode = grid[this.state.targetNodeRow][this.state.targetNodeCol];
+    const { shortestPathReversed } = dijkstra(
+      grid,
+      startNode,
+      targetNode,
+      NUM_ROWS,
+      NUM_COLS,
+      this.state.weightValue
+    );
+
+    const lines = this.pathToLines(shortestPathReversed);
+
+    grid = this.copyGrid();
+
+    for (let i = 0; i < shortestPathReversed.length; i++) {
+      const row = shortestPathReversed[i].row;
+      const col = shortestPathReversed[i].col;
+      grid[row][col].direction = lines[i];
+      grid[row][col].isPath = true;
+    }
+    this.setState({ grid: grid });
   }
 
   visualizeDijkstra() {
@@ -290,6 +321,14 @@ export default class PathfindingVisualizer extends Component {
       if (grid[node.row][node.col].isTarget) {
         grid[node.row][node.col].isTargetReached = true;
       }
+      if (grid[prevNode.row][prevNode.col].direction === "landing-pad") {
+        this.setState({
+          grid: grid,
+          launchPadRow: prevNode.row,
+          launchPadCol: prevNode.col,
+        });
+        return;
+      }
       this.setState({ grid: grid });
     }
   }
@@ -359,13 +398,19 @@ export default class PathfindingVisualizer extends Component {
   handleOnMouseDown(row, col) {
     const grid = this.copyGrid();
     const node = grid[row][col];
-    // Start moving start node or target node.
-    if (node.isStart) {
-      this.setState({ movingStart: true, mouseDown: true });
-      return;
-    }
+    // Start moving target node.
     if (node.isTarget) {
       this.setState({ movingTarget: true, mouseDown: true });
+      return;
+    }
+    // Start moving launch pad.
+    if (node.isPath && node.direction === "landing-pad") {
+      this.setState({ movingLaunchPad: true, mouseDown: true });
+      return;
+    }
+    // Start moving start node.
+    if (node.isStart) {
+      this.setState({ movingStart: true, mouseDown: true });
       return;
     }
     // Start drawing walls or weights no the node.
@@ -391,6 +436,7 @@ export default class PathfindingVisualizer extends Component {
         mouseDown: false,
         movingStart: false,
         movingTarget: false,
+        movingLaunchPad: false,
       });
     }
   }
@@ -399,20 +445,58 @@ export default class PathfindingVisualizer extends Component {
     if (this.state.mouseDown === true) {
       const grid = this.copyGrid();
       const node = grid[row][col];
-      if (this.state.movingStart) {
-        const prevStart =
-          grid[this.state.startNodeRow][this.state.startNodeCol];
-        prevStart.isStart = false;
-        node.isStart = true;
-        this.setState({ grid: grid, startNodeRow: row, startNodeCol: col });
-        return;
-      }
+      // Move target node.
       if (this.state.movingTarget) {
         const prevTarget =
           grid[this.state.targetNodeRow][this.state.targetNodeCol];
         prevTarget.isTarget = false;
         node.isTarget = true;
         this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
+        return;
+      }
+      // Move launch pad.
+      if (this.state.movingLaunchPad) {
+        // Remove path.
+        for (const row of grid) {
+          for (var node_ of row) {
+            node_.isPath = false;
+            node_.direction = null;
+            node_.isVisited = false;
+          }
+        }
+        // Move launch pad.
+        const prevLaunchPad =
+          grid[this.state.launchPadRow][this.state.launchPadCol];
+        prevLaunchPad.isPath = false;
+        prevLaunchPad.direction = null;
+        node.isPath = true;
+        node.direction = "landing-pad";
+        // Adjust start node.
+        const prevStart =
+          grid[this.state.startNodeRow][this.state.startNodeCol];
+        prevStart.isStart = false;
+        node.isStart = true;
+        // Set state.
+        this.setState(
+          {
+            grid: grid,
+            launchPadRow: row,
+            launchPadCol: col,
+            startNodeRow: row,
+            startNodeCol: col,
+          },
+          // ReDraw path.
+          this.displayDijkstra
+        );
+        return;
+      }
+      // Move start node.
+      if (this.state.movingStart) {
+        const prevStart =
+          grid[this.state.startNodeRow][this.state.startNodeCol];
+        prevStart.isStart = false;
+        node.isStart = true;
+        this.setState({ grid: grid, startNodeRow: row, startNodeCol: col });
         return;
       }
 
