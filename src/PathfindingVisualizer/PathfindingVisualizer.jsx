@@ -6,7 +6,6 @@ import NavigationBar from "./NavigationBar/NavigationBar";
 import DrawToggle from "./Buttons/DrawToggle/DrawToggle";
 import { AlgorithmTitle } from "./AlgorithmTitle/AlgorithmTitle";
 import "./Buttons/Button Styles/VisualizeButton.css";
-import "./Buttons/Button Styles/ClearWallsButton.css";
 import { dijkstra } from "./Search Algorithms/Dijkstra";
 import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
@@ -75,8 +74,12 @@ export default class PathfindingVisualizer extends Component {
             Go
           </button>
           <button onClick={this.clearPath.bind(this)}>Clear Path</button>
-          <button onClick={this.clearWalls.bind(this)} id="clear-walls-button">
-            Clear Walls
+          <button onClick={this.clearWalls.bind(this)}>Clear Walls</button>
+          <button
+            onClick={this.clearWeights.bind(this)}
+            style={{ marginRight: "100px" }}
+          >
+            Clear Weights
           </button>
           <DrawToggle
             setDrawMode={(mode) => {
@@ -462,6 +465,18 @@ export default class PathfindingVisualizer extends Component {
       for (const node of row) {
         if (node.isWall) {
           node.isWall = false;
+        }
+      }
+    }
+    this.setState({ grid: grid });
+  }
+
+  clearWeights() {
+    const grid = this.copyGrid();
+    for (const row of grid) {
+      for (const node of row) {
+        if (node.isWeight) {
+          node.isWeight = false;
         }
       }
     }
