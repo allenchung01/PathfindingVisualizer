@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 
+// Components
 import Node from "./Node/Node";
 import DropdownMenu from "./Buttons/DropdownMenu/DropdownMenu";
 import NavigationBar from "./NavigationBar/NavigationBar";
 import DrawToggle from "./Buttons/DrawToggle/DrawToggle";
 import Slider from "./Buttons/Slider/Slider";
+
+// Functions
 import { AlgorithmTitle } from "./AlgorithmTitle/AlgorithmTitle";
-import "./Buttons/Button Styles/VisualizeButton.css";
 import { dijkstra } from "./Search Algorithms/Dijkstra";
 import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
 import { aStar } from "./Search Algorithms/AStar";
 
+// CSS
+import "./Buttons/Button Styles/VisualizeButton.css";
 import "./PathfindingVisualizer.css";
 
 const NUM_ROWS = Math.floor(getScreenHeight() / 30);
