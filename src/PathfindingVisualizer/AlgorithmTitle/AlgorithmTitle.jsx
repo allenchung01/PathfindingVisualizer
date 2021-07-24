@@ -6,7 +6,7 @@ const BFS = "BFS";
 const DFS = "DFS";
 const ASTAR = "A*";
 
-export function AlgorithmTitle(props) {
+export default function AlgorithmTitle(props) {
   const { algorithm } = props;
   const [infoIsDisplayed, setInfoIsDisplayed] = useState(false);
 

@@ -6,9 +6,9 @@ import DropdownMenu from "./Buttons/DropdownMenu/DropdownMenu";
 import NavigationBar from "./NavigationBar/NavigationBar";
 import DrawToggle from "./Buttons/DrawToggle/DrawToggle";
 import Slider from "./Buttons/Slider/Slider";
+import AlgorithmTitle from "./AlgorithmTitle/AlgorithmTitle";
 
 // Functions
-import { AlgorithmTitle } from "./AlgorithmTitle/AlgorithmTitle";
 import { dijkstra } from "./Search Algorithms/Dijkstra";
 import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
@@ -26,13 +26,17 @@ const START_NODE_COL = 1;
 const TARGET_NODE_ROW = NUM_ROWS - 2;
 const TARGET_NODE_COL = NUM_COLS - 2;
 
-const DIJKSTRA = "Dijkstra";
-const BFS = "BFS";
-const DFS = "DFS";
-const ASTAR = "A*";
+const ALGORITHM = {
+  DIJKSTRA: "Dijkstra",
+  BFS: "BFS",
+  DFS: "DFS",
+  ASTAR: "A*",
+};
 
-const WALLS = "Walls";
-const WEIGHTS = "Weights";
+const DRAW_MODE = {
+  WALLS: "Walls",
+  WEIGHTS: "Weights",
+};
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -44,8 +48,8 @@ export default class PathfindingVisualizer extends Component {
       targetNodeRow: TARGET_NODE_ROW,
       targetNodeCol: TARGET_NODE_COL,
       mouseDown: false,
-      algorithm: DIJKSTRA,
-      drawMode: WALLS,
+      algorithm: ALGORITHM.DIJKSTRA,
+      drawMode: DRAW_MODE.WALLS,
       movingStart: false,
       movingTarget: false,
       movingLaunchPad: false,
@@ -69,16 +73,20 @@ export default class PathfindingVisualizer extends Component {
         <AlgorithmTitle algorithm={this.state.algorithm} />
         <NavigationBar>
           <DropdownMenu title={this.state.algorithm}>
-            <button onClick={() => this.setState({ algorithm: DIJKSTRA })}>
+            <button
+              onClick={() => this.setState({ algorithm: ALGORITHM.DIJKSTRA })}
+            >
               Dijkstra
             </button>
-            <button onClick={() => this.setState({ algorithm: BFS })}>
+            <button onClick={() => this.setState({ algorithm: ALGORITHM.BFS })}>
               BFS
             </button>
-            <button onClick={() => this.setState({ algorithm: DFS })}>
+            <button onClick={() => this.setState({ algorithm: ALGORITHM.DFS })}>
               DFS
             </button>
-            <button onClick={() => this.setState({ algorithm: ASTAR })}>
+            <button
+              onClick={() => this.setState({ algorithm: ALGORITHM.ASTAR })}
+            >
               A*
             </button>
           </DropdownMenu>
@@ -155,16 +163,16 @@ export default class PathfindingVisualizer extends Component {
 
   visualize(algorithm) {
     switch (algorithm) {
-      case DIJKSTRA:
+      case ALGORITHM.DIJKSTRA:
         this.visualizeDijkstra();
         break;
-      case BFS:
+      case ALGORITHM.BFS:
         this.visualizeBreadthFirstSearch();
         break;
-      case DFS:
+      case ALGORITHM.DFS:
         this.visualizeDepthFirstSearch();
         break;
-      case ASTAR:
+      case ALGORITHM.ASTAR:
         this.visualizeAStar();
         break;
       default:
@@ -182,7 +190,7 @@ export default class PathfindingVisualizer extends Component {
     var pathReversed;
 
     switch (this.state.algorithm) {
-      case DIJKSTRA:
+      case ALGORITHM.DIJKSTRA:
         pathReversed = dijkstra(
           grid,
           startNode,
@@ -192,7 +200,7 @@ export default class PathfindingVisualizer extends Component {
           this.state.weightValue
         ).shortestPathReversed;
         break;
-      case BFS:
+      case ALGORITHM.BFS:
         pathReversed = breadthFirstSearch(
           grid,
           startNode,
@@ -201,7 +209,7 @@ export default class PathfindingVisualizer extends Component {
           NUM_COLS
         ).shortestPathReversed;
         break;
-      case DFS:
+      case ALGORITHM.DFS:
         pathReversed = depthFirstSearch(
           grid,
           startNode,
@@ -210,7 +218,7 @@ export default class PathfindingVisualizer extends Component {
           NUM_COLS
         ).pathReversed;
         break;
-      case ASTAR:
+      case ALGORITHM.ASTAR:
         pathReversed = aStar(
           grid,
           startNode,
@@ -465,12 +473,12 @@ export default class PathfindingVisualizer extends Component {
     }
     // Start drawing walls or weights no the node.
     switch (this.state.drawMode) {
-      case WALLS:
+      case DRAW_MODE.WALLS:
         node.isWall = !node.isWall;
         node.isWeight = false;
         this.setState({ grid: grid, mouseDown: true });
         break;
-      case WEIGHTS:
+      case DRAW_MODE.WEIGHTS:
         node.isWeight = !node.isWeight;
         node.isWall = false;
         this.setState({ grid: grid, mouseDown: true });
@@ -581,12 +589,12 @@ export default class PathfindingVisualizer extends Component {
       }
 
       switch (this.state.drawMode) {
-        case WALLS:
+        case DRAW_MODE.WALLS:
           node.isWall = !node.isWall;
           node.isWeight = false;
           this.setState({ grid: grid });
           break;
-        case WEIGHTS:
+        case DRAW_MODE.WEIGHTS:
           node.isWeight = !node.isWeight;
           node.isWall = false;
           this.setState({ grid: grid });
