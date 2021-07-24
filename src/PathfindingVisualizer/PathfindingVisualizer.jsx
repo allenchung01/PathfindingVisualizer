@@ -504,10 +504,18 @@ export default class PathfindingVisualizer extends Component {
         // Move target node.
         const prevTarget =
           grid[this.state.targetNodeRow][this.state.targetNodeCol];
+        if (!prevTarget.isTargetReached) {
+          // Target was never reached, no need to redraw.
+          prevTarget.isTarget = false;
+          node.isTarget = true;
+          this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
+          return;
+        }
         prevTarget.isTarget = false;
         prevTarget.isTargetReached = false;
         prevTarget.isStart = false;
         node.isTarget = true;
+        node.isTargetReached = true;
         // Set state.
         this.setState(
           {
