@@ -13,18 +13,21 @@ import { dijkstra } from "./Search Algorithms/Dijkstra";
 import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
 import { aStar } from "./Search Algorithms/AStar";
+import { getScreenWidth, getScreenHeight } from "./Functions/ScreenFunctions";
 
 // CSS
 import "./Buttons/Button Styles/VisualizeButton.css";
 import "./PathfindingVisualizer.css";
 
-const NUM_ROWS = Math.floor(getScreenHeight() / 30);
-const NUM_COLS = Math.floor(getScreenWidth() / 30);
+const NODE_WIDTH = 30;
 
-const START_NODE_ROW = 5;
-const START_NODE_COL = 1;
-const TARGET_NODE_ROW = NUM_ROWS - 2;
-const TARGET_NODE_COL = NUM_COLS - 2;
+const NUM_ROWS = Math.floor(getScreenHeight() / NODE_WIDTH);
+const NUM_COLS = Math.floor(getScreenWidth() / NODE_WIDTH);
+
+const INITIAL_START_ROW = 5;
+const INITIAL_START_COL = 1;
+const INITIAL_TARGET_ROW = NUM_ROWS - 2;
+const INITIAL_TARGET_COL = NUM_COLS - 2;
 
 const ALGORITHM = {
   DIJKSTRA: "Dijkstra",
@@ -43,10 +46,10 @@ export default class PathfindingVisualizer extends Component {
     super(props);
     this.state = {
       grid: [],
-      startNodeRow: START_NODE_ROW,
-      startNodeCol: START_NODE_COL,
-      targetNodeRow: TARGET_NODE_ROW,
-      targetNodeCol: TARGET_NODE_COL,
+      startNodeRow: INITIAL_START_ROW,
+      startNodeCol: INITIAL_START_COL,
+      targetNodeRow: INITIAL_TARGET_ROW,
+      targetNodeCol: INITIAL_TARGET_COL,
       mouseDown: false,
       algorithm: ALGORITHM.DIJKSTRA,
       drawMode: DRAW_MODE.WALLS,
@@ -750,19 +753,4 @@ function NodeObj(col, row) {
   this.previousNode = null;
   this.direction = null;
   this.isTargetReached = false;
-}
-
-// Function to get the width of the browser window.
-function getScreenWidth() {
-  return Math.max(
-    document.body.scrollWidth,
-    document.documentElement.scrollWidth,
-    document.body.offsetWidth,
-    document.documentElement.offsetWidth,
-    document.documentElement.clientWidth
-  );
-}
-
-function getScreenHeight() {
-  return window.innerHeight;
 }
