@@ -79,7 +79,6 @@ export default class PathfindingVisualizer extends Component {
     const { grid } = this.state;
     return (
       <div>
-        <AlgorithmTitle algorithm={this.state.algorithm} />
         <NavigationBar>
           <NavigationSection>
             <DropdownMenu title={this.state.algorithm}>
@@ -142,8 +141,8 @@ export default class PathfindingVisualizer extends Component {
             </DropdownMenu>
           </NavigationSection>
         </NavigationBar>
-
         {this.displayGrid(grid)}
+        <AlgorithmTitle algorithm={this.state.algorithm} />
         <Credits />
       </div>
     );
@@ -153,6 +152,7 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ weightValue: value });
   }
 
+  // Visualizes the algorithm with discovery animations.
   visualize(algorithm) {
     switch (algorithm) {
       case ALGORITHM.DIJKSTRA:
@@ -172,16 +172,15 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  // Used to disply disjkstra when moving launch pad,
-  // instead of fully animating dijkstra.
-  redrawPath() {
+  // Displays the algorithm's path without discovery animations.
+  redrawPath(algorithm) {
     let grid = this.copyGrid();
     const startNode = grid[this.state.launchPadRow][this.state.launchPadCol];
     const targetNode = grid[this.state.targetNodeRow][this.state.targetNodeCol];
 
     var pathReversed;
 
-    switch (this.state.algorithm) {
+    switch (algorithm) {
       case ALGORITHM.DIJKSTRA:
         pathReversed = dijkstra(
           grid,
@@ -528,7 +527,9 @@ export default class PathfindingVisualizer extends Component {
             targetNodeCol: col,
           },
           // ReDraw path.
-          this.redrawPath
+          () => {
+            this.redrawPath(this.state.algorithm);
+          }
         );
         return;
         /*this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
