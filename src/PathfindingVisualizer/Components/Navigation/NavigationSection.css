@@ -1,0 +1,7 @@
+.navigation-section {
+  display: inline-block;
+}
+
+.navigation-section > *:not(:last-child) {
+  margin-right: 20px;
+}

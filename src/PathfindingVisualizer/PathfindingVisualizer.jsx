@@ -8,6 +8,7 @@ import DrawToggle from "./Buttons/DrawToggle/DrawToggle";
 import Slider from "./Buttons/Slider/Slider";
 import AlgorithmTitle from "./AlgorithmTitle/AlgorithmTitle";
 import Credits from "./Components/Credits/Credits";
+import NavigationSection from "./Components/Navigation/NavigationSection";
 
 // Functions
 import { dijkstra } from "./Search Algorithms/Dijkstra";
@@ -80,47 +81,66 @@ export default class PathfindingVisualizer extends Component {
       <div>
         <AlgorithmTitle algorithm={this.state.algorithm} />
         <NavigationBar>
-          <DropdownMenu title={this.state.algorithm}>
+          <NavigationSection>
+            <DropdownMenu title={this.state.algorithm}>
+              <button
+                onClick={() => this.setState({ algorithm: ALGORITHM.DIJKSTRA })}
+              >
+                Dijkstra
+              </button>
+              <button
+                onClick={() => this.setState({ algorithm: ALGORITHM.BFS })}
+              >
+                BFS
+              </button>
+              <button
+                onClick={() => this.setState({ algorithm: ALGORITHM.DFS })}
+              >
+                DFS
+              </button>
+              <button
+                onClick={() => this.setState({ algorithm: ALGORITHM.ASTAR })}
+              >
+                A*
+              </button>
+            </DropdownMenu>
             <button
-              onClick={() => this.setState({ algorithm: ALGORITHM.DIJKSTRA })}
+              id="visualize-button"
+              onClick={() => this.visualize(this.state.algorithm)}
             >
-              Dijkstra
+              Go
             </button>
-            <button onClick={() => this.setState({ algorithm: ALGORITHM.BFS })}>
-              BFS
+          </NavigationSection>
+
+          <NavigationSection>
+            <button onClick={this.clearPath.bind(this)}>Clear Path</button>
+            <button onClick={this.clearWalls.bind(this)}>Clear Walls</button>
+            <button onClick={this.clearWeights.bind(this)}>
+              Clear Weights
             </button>
-            <button onClick={() => this.setState({ algorithm: ALGORITHM.DFS })}>
-              DFS
-            </button>
-            <button
-              onClick={() => this.setState({ algorithm: ALGORITHM.ASTAR })}
-            >
-              A*
-            </button>
-          </DropdownMenu>
-          <button
-            id="visualize-button"
-            onClick={() => this.visualize(this.state.algorithm)}
-          >
-            Go
-          </button>
-          <button onClick={this.clearPath.bind(this)}>Clear Path</button>
-          <button onClick={this.clearWalls.bind(this)}>Clear Walls</button>
-          <button
-            onClick={this.clearWeights.bind(this)}
-            style={{ marginRight: "100px" }}
-          >
-            Clear Weights
-          </button>
-          <DrawToggle
-            setDrawMode={(mode) => {
-              this.setState({ drawMode: mode });
-            }}
-          />
-          <Slider
-            value={this.state.weightValue}
-            setValue={this.setWeightValue.bind(this)}
-          />
+          </NavigationSection>
+
+          <NavigationSection>
+            <DrawToggle
+              setDrawMode={(mode) => {
+                this.setState({ drawMode: mode });
+              }}
+            />
+          </NavigationSection>
+
+          <NavigationSection>
+            <Slider
+              value={this.state.weightValue}
+              setValue={this.setWeightValue.bind(this)}
+            />
+          </NavigationSection>
+
+          <NavigationSection>
+            <DropdownMenu title="More">
+              <button>Attributes</button>
+              <button>GitHub</button>
+            </DropdownMenu>
+          </NavigationSection>
         </NavigationBar>
 
         {this.displayGrid(grid)}
