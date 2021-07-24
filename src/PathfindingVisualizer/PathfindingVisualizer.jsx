@@ -50,22 +50,26 @@ export default class PathfindingVisualizer extends Component {
       startNodeCol: INITIAL_START_COL,
       targetNodeRow: INITIAL_TARGET_ROW,
       targetNodeCol: INITIAL_TARGET_COL,
+      launchPadRow: null,
+      launchPadCol: null,
       mouseDown: false,
       algorithm: ALGORITHM.DIJKSTRA,
       drawMode: DRAW_MODE.WALLS,
-      movingStart: false,
-      movingTarget: false,
-      movingLaunchPad: false,
+      isMovingStart: false,
+      isMovingTarget: false,
+      isMovingLaunchPad: false,
       weightValue: 5,
-      launchPadRow: null,
-      launchPadCol: null,
     };
   }
 
-  componentDidMount() {
-    const grid = this.createInitialGrid();
+  setUp() {
     document.body.onmouseup = this.handleOnMouseUp.bind(this);
     document.body.onmouseleave = this.handleOnMouseUp.bind(this);
+  }
+
+  componentDidMount() {
+    this.setUp();
+    const grid = this.createInitialGrid();
     this.setState({ grid: grid });
   }
 
@@ -461,17 +465,17 @@ export default class PathfindingVisualizer extends Component {
     const node = grid[row][col];
     // Start moving target node.
     if (node.isTarget) {
-      this.setState({ movingTarget: true, mouseDown: true });
+      this.setState({ isMovingTarget: true, mouseDown: true });
       return;
     }
     // Start moving launch pad.
     if (node.isPath && node.direction === "landing-pad") {
-      this.setState({ movingLaunchPad: true, mouseDown: true });
+      this.setState({ isMovingLaunchPad: true, mouseDown: true });
       return;
     }
     // Start moving start node.
     if (node.isStart) {
-      this.setState({ movingStart: true, mouseDown: true });
+      this.setState({ isMovingStart: true, mouseDown: true });
       return;
     }
     // Start drawing walls or weights no the node.
@@ -495,9 +499,9 @@ export default class PathfindingVisualizer extends Component {
     if (this.state.mouseDown === true) {
       this.setState({
         mouseDown: false,
-        movingStart: false,
-        movingTarget: false,
-        movingLaunchPad: false,
+        isMovingStart: false,
+        isMovingTarget: false,
+        isMovingLaunchPad: false,
       });
     }
   }
@@ -507,7 +511,7 @@ export default class PathfindingVisualizer extends Component {
       const grid = this.copyGrid();
       const node = grid[row][col];
       // Move target node.
-      if (this.state.movingTarget) {
+      if (this.state.isMovingTarget) {
         // Remove path.
         for (const row of grid) {
           for (var node_ of row) {
@@ -546,7 +550,7 @@ export default class PathfindingVisualizer extends Component {
         return;*/
       }
       // Move launch pad.
-      if (this.state.movingLaunchPad) {
+      if (this.state.isMovingLaunchPad) {
         // Remove path.
         for (const row of grid) {
           for (var node_ of row) {
@@ -582,7 +586,7 @@ export default class PathfindingVisualizer extends Component {
         return;
       }
       // Move start node.
-      if (this.state.movingStart) {
+      if (this.state.isMovingStart) {
         const prevStart =
           grid[this.state.startNodeRow][this.state.startNodeCol];
         prevStart.isStart = false;
@@ -608,27 +612,20 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  // Create a 2D array of node objects.
+  // Returns the initial 2D array of node objects.
   createInitialGrid() {
     const grid = [];
-    for (let row = 0; row < NUM_ROWS; row++) {
-      const currentRow = [];
-      for (let col = 0; col < NUM_COLS; col++) {
-        const currNode = new NodeObj(col, row);
-        if (
-          row === this.state.startNodeRow &&
-          col === this.state.startNodeCol
-        ) {
-          currNode.isStart = true;
-        } else if (
-          row === this.state.targetNodeRow &&
-          col === this.state.targetNodeCol
-        ) {
-          currNode.isTarget = true;
-        }
-        currentRow.push(currNode);
+    for (let r = 0; r < NUM_ROWS; r++) {
+      const row = [];
+      for (let c = 0; c < NUM_COLS; c++) {
+        const node = new NodeObj(c, r);
+        node.isStart =
+          r === this.state.startNodeRow && c === this.state.startNodeCol;
+        node.isTarget =
+          r === this.state.targetNodeRow && c === this.state.targetNodeCol;
+        row.push(node);
       }
-      grid.push(currentRow);
+      grid.push(row);
     }
     return grid;
   }
@@ -738,19 +735,16 @@ export default class PathfindingVisualizer extends Component {
   }
 }
 
-// Node object constructor.
 function NodeObj(col, row) {
   this.col = col;
   this.row = row;
   this.isStart = false;
   this.isTarget = false;
   this.isVisited = false;
+  this.isTargetReached = false;
   this.isWall = false;
   this.isWeight = false;
-  // Distance from start node.
   this.distance = Infinity;
-  // Previous node used to trace path.
   this.previousNode = null;
   this.direction = null;
-  this.isTargetReached = false;
 }
