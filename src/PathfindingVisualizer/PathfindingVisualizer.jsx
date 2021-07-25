@@ -68,6 +68,10 @@ export default class PathfindingVisualizer extends Component {
       isMovingLaunchPad: false,
       weightValue: 5,
     };
+    // Bind 'this' in constructor to avoid binding on every render.
+    this.clearWeights = clearWeights.bind(this);
+    this.clearPath = clearPath.bind(this);
+    this.clearWalls = clearWalls.bind(this);
   }
 
   setUp() {
@@ -118,9 +122,9 @@ export default class PathfindingVisualizer extends Component {
           </NavigationSection>
 
           <NavigationSection>
-            <button onClick={clearPath.bind(this)}>Clear Path</button>
-            <button onClick={clearWalls.bind(this)}>Clear Walls</button>
-            <button onClick={clearWeights.bind(this)}>Clear Weights</button>
+            <button onClick={this.clearPath}>Clear Path</button>
+            <button onClick={this.clearWalls}>Clear Walls</button>
+            <button onClick={this.clearWeights}>Clear Weights</button>
           </NavigationSection>
 
           <NavigationSection>
