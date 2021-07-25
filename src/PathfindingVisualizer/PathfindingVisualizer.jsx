@@ -16,6 +16,7 @@ import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
 import { aStar } from "./Search Algorithms/AStar";
 import { getScreenWidth, getScreenHeight } from "./Functions/ScreenFunctions";
+import { copyGrid } from "./Functions/GridFunctions";
 
 // CSS
 import "./Buttons/Button Styles/VisualizeButton.css";
@@ -174,12 +175,12 @@ export default class PathfindingVisualizer extends Component {
 
   // Displays the algorithm's path without discovery animations.
   redrawPath(algorithm) {
-    let grid = this.copyGrid();
+    let grid = copyGrid(this.state.grid);
     const startNode = grid[this.state.launchPadRow][this.state.launchPadCol];
     const targetNode = grid[this.state.targetNodeRow][this.state.targetNodeCol];
 
+    // Get the path of the given algorithm.
     var pathReversed;
-
     switch (algorithm) {
       case ALGORITHM.DIJKSTRA:
         pathReversed = dijkstra(
@@ -223,18 +224,9 @@ export default class PathfindingVisualizer extends Component {
         return;
     }
 
-    /*const { shortestPathReversed } = dijkstra(
-      grid,
-      startNode,
-      targetNode,
-      NUM_ROWS,
-      NUM_COLS,
-      this.state.weightValue
-    );*/
-
     const lines = this.pathToLines(pathReversed);
 
-    grid = this.copyGrid();
+    grid = copyGrid(this.state.grid);
 
     for (let i = 0; i < pathReversed.length; i++) {
       const row = pathReversed[i].row;
@@ -246,10 +238,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeDijkstra() {
-    let grid = this.copyGrid();
+    let grid = copyGrid(this.state.grid);
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
+      grid = copyGrid(this.state.grid);
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -266,10 +258,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeBreadthFirstSearch() {
-    let grid = this.copyGrid();
+    let grid = copyGrid(this.state.grid);
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
+      grid = copyGrid(this.state.grid);
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -285,10 +277,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeDepthFirstSearch() {
-    let grid = this.copyGrid();
+    let grid = copyGrid(this.state.grid);
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
+      grid = copyGrid(this.state.grid);
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -304,10 +296,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeAStar() {
-    let grid = this.copyGrid();
+    let grid = copyGrid(this.state.grid);
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
+      grid = copyGrid(this.state.grid);
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -362,7 +354,7 @@ export default class PathfindingVisualizer extends Component {
     const node = pathReversed[i];
     if (!node.isStart) {
       const prevNode = pathReversed[i + 1];
-      const grid = this.copyGrid();
+      const grid = copyGrid(this.state.grid);
       grid[prevNode.row][prevNode.col].isStart = false;
       grid[prevNode.row][prevNode.col].isPath = true;
       grid[prevNode.row][prevNode.col].direction = lines[i + 1];
@@ -445,7 +437,7 @@ export default class PathfindingVisualizer extends Component {
 
   // Handles onMouseDown event on node at given row and column.
   handleOnMouseDown(row, col) {
-    const grid = this.copyGrid();
+    const grid = copyGrid(this.state.grid);
     const node = grid[row][col];
     // Start moving target node.
     if (node.isTarget) {
@@ -492,7 +484,7 @@ export default class PathfindingVisualizer extends Component {
 
   handleOnMouseEnter(row, col) {
     if (this.state.mouseDown === true) {
-      const grid = this.copyGrid();
+      const grid = copyGrid(this.state.grid);
       const node = grid[row][col];
       // Move target node.
       if (this.state.isMovingTarget) {
@@ -567,7 +559,9 @@ export default class PathfindingVisualizer extends Component {
             startNodeCol: col,
           },
           // ReDraw path.
-          this.redrawPath
+          () => {
+            this.redrawPath(this.state.algorithm);
+          }
         );
         return;
       }
@@ -678,13 +672,13 @@ export default class PathfindingVisualizer extends Component {
   }
 
   clearPath() {
-    const grid = this.copyGrid();
+    const grid = copyGrid(this.state.grid);
     this.resetNodes(grid);
     this.setState({ grid: grid });
   }
 
   clearWalls() {
-    const grid = this.copyGrid();
+    const grid = copyGrid(this.state.grid);
     for (const row of grid) {
       for (const node of row) {
         if (node.isWall) {
@@ -696,7 +690,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   clearWeights() {
-    const grid = this.copyGrid();
+    const grid = copyGrid(this.state.grid);
     for (const row of grid) {
       for (const node of row) {
         if (node.isWeight) {
@@ -705,19 +699,6 @@ export default class PathfindingVisualizer extends Component {
       }
     }
     this.setState({ grid: grid });
-  }
-
-  copyGrid() {
-    const grid = this.state.grid;
-    const copiedGrid = [];
-    for (const row of grid) {
-      const copiedRow = row.map((node) => {
-        const copiedNode = Object.assign({}, node);
-        return copiedNode;
-      });
-      copiedGrid.push(copiedRow);
-    }
-    return copiedGrid;
   }
 }
 
