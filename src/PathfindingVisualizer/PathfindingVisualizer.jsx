@@ -16,7 +16,12 @@ import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
 import { aStar } from "./Search Algorithms/AStar";
 import { getScreenWidth, getScreenHeight } from "./Functions/ScreenFunctions";
-import { copyGrid } from "./Functions/GridFunctions";
+import {
+  copyGrid,
+  clearWeights,
+  clearPath,
+  clearWalls,
+} from "./Functions/GridFunctions";
 
 // CSS
 import "./Buttons/Button Styles/VisualizeButton.css";
@@ -113,11 +118,9 @@ export default class PathfindingVisualizer extends Component {
           </NavigationSection>
 
           <NavigationSection>
-            <button onClick={this.clearPath.bind(this)}>Clear Path</button>
-            <button onClick={this.clearWalls.bind(this)}>Clear Walls</button>
-            <button onClick={this.clearWeights.bind(this)}>
-              Clear Weights
-            </button>
+            <button onClick={clearPath.bind(this)}>Clear Path</button>
+            <button onClick={clearWalls.bind(this)}>Clear Walls</button>
+            <button onClick={clearWeights.bind(this)}>Clear Weights</button>
           </NavigationSection>
 
           <NavigationSection>
@@ -669,36 +672,6 @@ export default class PathfindingVisualizer extends Component {
         node.isTargetReached = false;
       }
     }
-  }
-
-  clearPath() {
-    const grid = copyGrid(this.state.grid);
-    this.resetNodes(grid);
-    this.setState({ grid: grid });
-  }
-
-  clearWalls() {
-    const grid = copyGrid(this.state.grid);
-    for (const row of grid) {
-      for (const node of row) {
-        if (node.isWall) {
-          node.isWall = false;
-        }
-      }
-    }
-    this.setState({ grid: grid });
-  }
-
-  clearWeights() {
-    const grid = copyGrid(this.state.grid);
-    for (const row of grid) {
-      for (const node of row) {
-        if (node.isWeight) {
-          node.isWeight = false;
-        }
-      }
-    }
-    this.setState({ grid: grid });
   }
 }
 
