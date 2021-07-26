@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./DrawToggle.css";
-import brushesImg from "../../Images/paintbrushes.svg";
+import brushesImg from "../../../Images/paintbrushes.svg";
 import Hint from "../../Hints/Hint";
 
 const WALLS = "Walls";

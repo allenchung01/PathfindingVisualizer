@@ -18,12 +18,12 @@ don't change during resizing animations */
   height: 30px;
   display: inline-block;
   background-color: whitesmoke;
-  cursor: url("../Images/paintbrush.svg") 0 19, pointer;
+  cursor: url("../../Images/paintbrush.svg") 0 19, pointer;
 }
 
 .node-target {
   cursor: grab;
-  background-image: url("../Images/icons8-empty-flag-90.png");
+  background-image: url("../../Images/icons8-empty-flag-90.png");
   background-repeat: no-repeat;
   background-size: 26px;
   background-position: center center;
@@ -41,7 +41,7 @@ don't change during resizing animations */
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
-  background-image: url("../Images/icons8-empty-flag-90.png");
+  background-image: url("../../Images/icons8-empty-flag-90.png");
   background-repeat: no-repeat;
   background-size: 26px;
   background-position: center center;
@@ -49,7 +49,7 @@ don't change during resizing animations */
 
 .node-start {
   cursor: grab;
-  background-image: url("../Images/icons8-launch-90.png");
+  background-image: url("../../Images/icons8-launch-90.png");
   background-repeat: no-repeat;
   background-size: 28px;
   background-position: center center;
@@ -72,7 +72,7 @@ don't change during resizing animations */
 
 .node-path-horizontal {
   background-color: whitesmoke;
-  background-image: url(../Images/horizontal-line.png);
+  background-image: url(../../Images/horizontal-line.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -88,7 +88,7 @@ don't change during resizing animations */
 
 .node-path-vertical {
   background-color: whitesmoke;
-  background-image: url(../Images/vertical-line.png);
+  background-image: url(../../Images/vertical-line.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -104,7 +104,7 @@ don't change during resizing animations */
 
 .node-path-ul {
   background-color: whitesmoke;
-  background-image: url(../Images/ul.png);
+  background-image: url(../../Images/ul.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -120,7 +120,7 @@ don't change during resizing animations */
 
 .node-path-ur {
   background-color: whitesmoke;
-  background-image: url(../Images/ur.png);
+  background-image: url(../../Images/ur.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -136,7 +136,7 @@ don't change during resizing animations */
 
 .node-path-bl {
   background-color: whitesmoke;
-  background-image: url(../Images/bl.png);
+  background-image: url(../../Images/bl.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -152,7 +152,7 @@ don't change during resizing animations */
 
 .node-path-br {
   background-color: whitesmoke;
-  background-image: url(../Images/br.png);
+  background-image: url(../../Images/br.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -169,7 +169,7 @@ don't change during resizing animations */
 .node-path-landing-pad {
   cursor: grab;
   background-color: whitesmoke;
-  background-image: url(../Images/landing-pad.png);
+  background-image: url(../../Images/landing-pad.png);
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: center center;
@@ -198,7 +198,7 @@ don't change during resizing animations */
 }
 
 .node-weight {
-  background-image: url("../Images/weight-plates.svg");
+  background-image: url("../../Images/weight-plates.svg");
   background-size: contain;
   background-color: transparent;
   animation-name: wallAnimation;

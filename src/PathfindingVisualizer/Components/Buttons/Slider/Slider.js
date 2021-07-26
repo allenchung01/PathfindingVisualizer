@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Slider.css";
-import weightImg from "../../Images/weight-plates.svg";
+import weightImg from "../../../Images/weight-plates.svg";
 import Hint from "../../Hints/Hint";
 
 export default function Slider(props) {

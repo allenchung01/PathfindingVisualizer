@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
 // Components
-import Node from "./Node/Node";
-import DropdownMenu from "./Buttons/DropdownMenu/DropdownMenu";
-import NavigationBar from "./NavigationBar/NavigationBar";
-import DrawToggle from "./Buttons/DrawToggle/DrawToggle";
-import Slider from "./Buttons/Slider/Slider";
-import AlgorithmTitle from "./AlgorithmTitle/AlgorithmTitle";
+import Node from "./Components/Node/Node";
+import DropdownMenu from "./Components/Buttons/DropdownMenu/DropdownMenu";
+import NavigationBar from "./Components/Navigation/NavigationBar/NavigationBar";
+import DrawToggle from "./Components/Buttons/DrawToggle/DrawToggle";
+import Slider from "./Components/Buttons/Slider/Slider";
+import AlgorithmTitle from "./Components/AlgorithmTitle/AlgorithmTitle";
 import Credits from "./Components/Credits/Credits";
 import NavigationSection from "./Components/Navigation/NavigationSection";
 
@@ -21,10 +21,11 @@ import {
   clearWeights,
   clearPath,
   clearWalls,
+  createInitialGrid,
 } from "./Functions/GridFunctions";
 
 // CSS
-import "./Buttons/Button Styles/VisualizeButton.css";
+import "./Components/Buttons/Button Styles/VisualizeButton.css";
 import "./PathfindingVisualizer.css";
 
 const NODE_WIDTH = 30;
@@ -72,6 +73,7 @@ export default class PathfindingVisualizer extends Component {
     this.clearWeights = clearWeights.bind(this);
     this.clearPath = clearPath.bind(this);
     this.clearWalls = clearWalls.bind(this);
+    this.createInitialGrid = createInitialGrid.bind(this);
   }
 
   setUp() {
@@ -81,9 +83,21 @@ export default class PathfindingVisualizer extends Component {
 
   componentDidMount() {
     this.setUp();
-    const grid = this.createInitialGrid();
-    this.setState({ grid: grid });
+    this.createInitialGrid(NUM_ROWS, NUM_COLS);
   }
+
+  setAlgorithmDijkstra = () => {
+    this.setState({ algorithm: ALGORITHM.DIJKSTRA });
+  };
+  setAlgorithmBFS = () => {
+    this.setState({ algorithm: ALGORITHM.BFS });
+  };
+  setAlgorithmDFS = () => {
+    this.setState({ algorithm: ALGORITHM.DFS });
+  };
+  setAlgorithmAStar = () => {
+    this.setState({ algorithm: ALGORITHM.ASTAR });
+  };
 
   render() {
     const { grid } = this.state;
@@ -92,26 +106,10 @@ export default class PathfindingVisualizer extends Component {
         <NavigationBar>
           <NavigationSection>
             <DropdownMenu title={this.state.algorithm}>
-              <button
-                onClick={() => this.setState({ algorithm: ALGORITHM.DIJKSTRA })}
-              >
-                Dijkstra
-              </button>
-              <button
-                onClick={() => this.setState({ algorithm: ALGORITHM.BFS })}
-              >
-                BFS
-              </button>
-              <button
-                onClick={() => this.setState({ algorithm: ALGORITHM.DFS })}
-              >
-                DFS
-              </button>
-              <button
-                onClick={() => this.setState({ algorithm: ALGORITHM.ASTAR })}
-              >
-                A*
-              </button>
+              <button onClick={this.setAlgorithmDijkstra}>Dijkstra</button>
+              <button onClick={this.setAlgorithmBFS}>BFS</button>
+              <button onClick={this.setAlgorithmDFS}>DFS</button>
+              <button onClick={this.setAlgorithmAStar}>A*</button>
             </DropdownMenu>
             <button
               id="visualize-button"
@@ -599,29 +597,11 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  // Returns the initial 2D array of node objects.
-  createInitialGrid() {
-    const grid = [];
-    for (let r = 0; r < NUM_ROWS; r++) {
-      const row = [];
-      for (let c = 0; c < NUM_COLS; c++) {
-        const node = new NodeObj(c, r);
-        node.isStart =
-          r === this.state.startNodeRow && c === this.state.startNodeCol;
-        node.isTarget =
-          r === this.state.targetNodeRow && c === this.state.targetNodeCol;
-        row.push(node);
-      }
-      grid.push(row);
-    }
-    return grid;
-  }
-
   // Map the grid to Node components that are displayed.
-  displayGrid(nodes) {
+  displayGrid(grid) {
     return (
       <div className="grid">
-        {nodes.map((row, rowIndex) => {
+        {grid.map((row, rowIndex) => {
           return (
             <div className="row" key={rowIndex}>
               {row.map((node, nodeIndex) => {
@@ -677,18 +657,4 @@ export default class PathfindingVisualizer extends Component {
       }
     }
   }
-}
-
-function NodeObj(col, row) {
-  this.col = col;
-  this.row = row;
-  this.isStart = false;
-  this.isTarget = false;
-  this.isVisited = false;
-  this.isTargetReached = false;
-  this.isWall = false;
-  this.isWeight = false;
-  this.distance = Infinity;
-  this.previousNode = null;
-  this.direction = null;
 }
