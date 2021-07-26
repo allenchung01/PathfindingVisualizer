@@ -162,22 +162,33 @@ export default class PathfindingVisualizer extends Component {
 
   // Visualizes the algorithm with discovery animations.
   visualize(algorithm) {
-    switch (algorithm) {
-      case ALGORITHM.DIJKSTRA:
-        this.visualizeDijkstra();
-        break;
-      case ALGORITHM.BFS:
-        this.visualizeBreadthFirstSearch();
-        break;
-      case ALGORITHM.DFS:
-        this.visualizeDepthFirstSearch();
-        break;
-      case ALGORITHM.ASTAR:
-        this.visualizeAStar();
-        break;
-      default:
-        return;
-    }
+    // Reset the grid before visualizing.
+    let grid = this.copyGrid();
+    this.resetNodes(grid);
+    this.setState({ grid: grid }, () => {
+      // Make another copy of grid to perform algorithm on.
+      grid = this.copyGrid();
+      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
+      const targetNode =
+        grid[this.state.targetNodeRow][this.state.targetNodeCol];
+
+      switch (algorithm) {
+        case ALGORITHM.DIJKSTRA:
+          this.visualizeDijkstra(grid, startNode, targetNode);
+          break;
+        case ALGORITHM.BFS:
+          this.visualizeBreadthFirstSearch(grid, startNode, targetNode);
+          break;
+        case ALGORITHM.DFS:
+          this.visualizeDepthFirstSearch(grid, startNode, targetNode);
+          break;
+        case ALGORITHM.ASTAR:
+          this.visualizeAStar(grid, startNode, targetNode);
+          break;
+        default:
+          return;
+      }
+    });
   }
 
   // Displays the algorithm's path without discovery animations.
@@ -244,82 +255,52 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid: grid });
   }
 
-  visualizeDijkstra() {
-    let grid = this.copyGrid();
-    this.resetNodes(grid);
-    this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
-      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
-      const targetNode =
-        grid[this.state.targetNodeRow][this.state.targetNodeCol];
-      const { visitedNodesInOrder, shortestPathReversed } = dijkstra(
-        grid,
-        startNode,
-        targetNode,
-        NUM_ROWS,
-        NUM_COLS,
-        this.state.weightValue
-      );
-      this.animateSearch(visitedNodesInOrder, shortestPathReversed);
-    });
+  /*----- Visualization Methods -----*/
+
+  visualizeDijkstra(grid, startNode, targetNode) {
+    const { visitedNodesInOrder, shortestPathReversed } = dijkstra(
+      grid,
+      startNode,
+      targetNode,
+      NUM_ROWS,
+      NUM_COLS,
+      this.state.weightValue
+    );
+    this.animateSearch(visitedNodesInOrder, shortestPathReversed);
   }
 
-  visualizeBreadthFirstSearch() {
-    let grid = this.copyGrid();
-    this.resetNodes(grid);
-    this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
-      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
-      const targetNode =
-        grid[this.state.targetNodeRow][this.state.targetNodeCol];
-      const { visitedNodesInOrder, shortestPathReversed } = breadthFirstSearch(
-        grid,
-        startNode,
-        targetNode,
-        NUM_ROWS,
-        NUM_COLS
-      );
-      this.animateSearch(visitedNodesInOrder, shortestPathReversed);
-    });
+  visualizeBreadthFirstSearch(grid, startNode, targetNode) {
+    const { visitedNodesInOrder, shortestPathReversed } = breadthFirstSearch(
+      grid,
+      startNode,
+      targetNode,
+      NUM_ROWS,
+      NUM_COLS
+    );
+    this.animateSearch(visitedNodesInOrder, shortestPathReversed);
   }
 
-  visualizeDepthFirstSearch() {
-    let grid = this.copyGrid();
-    this.resetNodes(grid);
-    this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
-      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
-      const targetNode =
-        grid[this.state.targetNodeRow][this.state.targetNodeCol];
-      const { visitedNodesInOrder, pathReversed } = depthFirstSearch(
-        grid,
-        startNode,
-        targetNode,
-        NUM_ROWS,
-        NUM_COLS
-      );
-      this.animateSearch(visitedNodesInOrder, pathReversed);
-    });
+  visualizeDepthFirstSearch(grid, startNode, targetNode) {
+    const { visitedNodesInOrder, pathReversed } = depthFirstSearch(
+      grid,
+      startNode,
+      targetNode,
+      NUM_ROWS,
+      NUM_COLS
+    );
+    this.animateSearch(visitedNodesInOrder, pathReversed);
   }
 
-  visualizeAStar() {
-    let grid = this.copyGrid();
-    this.resetNodes(grid);
-    this.setState({ grid: grid }, () => {
-      grid = this.copyGrid();
-      const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
-      const targetNode =
-        grid[this.state.targetNodeRow][this.state.targetNodeCol];
-      const { visitedNodesInOrder, shortestPathReversed } = aStar(
-        grid,
-        startNode,
-        targetNode,
-        NUM_ROWS,
-        NUM_COLS,
-        this.state.weightValue
-      );
-      this.animateSearch(visitedNodesInOrder, shortestPathReversed);
-    });
+  visualizeAStar(grid, startNode, targetNode) {
+    const { visitedNodesInOrder, shortestPathReversed } = aStar(
+      grid,
+      startNode,
+      targetNode,
+      NUM_ROWS,
+      NUM_COLS,
+      this.state.weightValue
+    );
+    this.animateSearch(visitedNodesInOrder, shortestPathReversed);
   }
 
   animateSearch(visitedNodesInOrder, pathReversed) {
