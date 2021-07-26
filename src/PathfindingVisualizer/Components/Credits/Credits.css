@@ -1,3 +1,11 @@
 .credits {
-  background-color: white;
+  background-color: white !important;
+  margin: 20px;
+}
+
+.credits .credit {
+  text-align: right;
+  color: #404040;
+  display: block;
+  margin-right: 20px;
 }

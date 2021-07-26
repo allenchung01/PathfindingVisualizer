@@ -125,10 +125,13 @@ export default class PathfindingVisualizer extends Component {
           </NavigationSection>
 
           <NavigationSection>
+            {/*
             <DropdownMenu title="More">
-              <button>Attributes</button>
-              <button>GitHub</button>
-            </DropdownMenu>
+              <button>Credits</button>
+              <a href="https://github.com/allenchung01">
+                <button>GitHub</button>
+              </a>
+            </DropdownMenu>*/}
           </NavigationSection>
         </NavigationBar>
         {this.displayGrid(grid)}
