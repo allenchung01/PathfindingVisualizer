@@ -34,7 +34,7 @@ export function createInitialGrid(numRows, numCols) {
 
 // Clears all weights on grid and set state.
 export function clearWeights() {
-  const grid = copyGrid(this.state.grid);
+  const grid = this.copyGrid();
   for (const row of grid) {
     for (const node of row) {
       if (node.isWeight) {
@@ -47,14 +47,14 @@ export function clearWeights() {
 
 // Clears all path nodes on grid and set state.
 export function clearPath() {
-  const grid = copyGrid(this.state.grid);
+  const grid = this.copyGrid();
   this.resetNodes(grid);
   this.setState({ grid: grid });
 }
 
 // Clears all walls on grid and set state.
 export function clearWalls() {
-  const grid = copyGrid(this.state.grid);
+  const grid = this.copyGrid();
   for (const row of grid) {
     for (const node of row) {
       if (node.isWall) {
