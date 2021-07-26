@@ -16,6 +16,7 @@ import { breadthFirstSearch } from "./Search Algorithms/BreadthFirstSearch";
 import { depthFirstSearch } from "./Search Algorithms/DepthFirstSearch";
 import { aStar } from "./Search Algorithms/AStar";
 import { getScreenWidth, getScreenHeight } from "./Functions/ScreenFunctions";
+import { pathToLines } from "./Functions/HelperFunctions";
 import {
   copyGrid,
   clearWeights,
@@ -242,10 +243,10 @@ export default class PathfindingVisualizer extends Component {
         return;
     }
 
-    const lines = this.pathToLines(pathReversed);
+    const lines = pathToLines(pathReversed);
 
+    // Set the grid to the new grid with updated path.
     grid = this.copyGrid();
-
     for (let i = 0; i < pathReversed.length; i++) {
       const row = pathReversed[i].row;
       const col = pathReversed[i].col;
@@ -255,7 +256,7 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid: grid });
   }
 
-  /*----- Visualization Methods -----*/
+  /*----- Algorithm Methods -----*/
 
   visualizeDijkstra(grid, startNode, targetNode) {
     const { visitedNodesInOrder, shortestPathReversed } = dijkstra(
@@ -303,12 +304,15 @@ export default class PathfindingVisualizer extends Component {
     this.animateSearch(visitedNodesInOrder, shortestPathReversed);
   }
 
+  /*----- Animation Methods -----*/
+
+  // Animates the discovery of nodes in the given list.
   animateSearch(visitedNodesInOrder, pathReversed) {
     for (let i = 0; i < visitedNodesInOrder.length; i++) {
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
-        // Start path animation after last visited node.
         if (i === visitedNodesInOrder.length - 1) {
+          // Animate the path after discovery animation is complete.
           this.animatePath(pathReversed);
         } else {
           if (!node.isStart && !node.isTarget) {
@@ -324,13 +328,10 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  // Animates the final path from start to target node.
   animatePath(pathReversed) {
-    const lines = this.pathToLines(pathReversed);
-    let startRow = this.state.startNodeRow;
-    let startCol = this.state.startNodeCol;
+    const lines = pathToLines(pathReversed);
     for (let i = pathReversed.length - 1; i >= 0; i--) {
-      startRow = pathReversed[i].row;
-      startCol = pathReversed[i].col;
       setTimeout(
         () => this.moveRocketShip(pathReversed, lines, i),
         3000 * ((pathReversed.length - i) / pathReversed.length)
@@ -338,6 +339,7 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  // Moves the rocket ship one space given the path, lines, and position.
   moveRocketShip(pathReversed, lines, i) {
     const node = pathReversed[i];
     if (!node.isStart) {
@@ -362,87 +364,28 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  // Returns an array of lines, given a path of nodes.
-  pathToLines(pathReversed) {
-    const lines = [];
-    const directions = [];
-    directions.push("none");
-    for (let i = 1; i < pathReversed.length; i++) {
-      let prevNode = pathReversed[i - 1];
-      let currNode = pathReversed[i];
-      let dRow = prevNode.row - currNode.row;
-      let dCol = currNode.col - prevNode.col;
-      const direction =
-        dCol === 1
-          ? "right"
-          : dCol === -1
-          ? "left"
-          : dRow === 1
-          ? "up"
-          : dRow === -1
-          ? "down"
-          : "";
-      directions.push(direction);
-      const line =
-        direction === "right" && directions[i - 1] === "none"
-          ? "horizontal"
-          : direction === "right" && directions[i - 1] === "right"
-          ? "horizontal"
-          : direction === "right" && directions[i - 1] === "up"
-          ? "ul"
-          : direction === "right" && directions[i - 1] === "down"
-          ? "bl"
-          : direction === "left" && directions[i - 1] === "none"
-          ? "horizontal"
-          : direction === "left" && directions[i - 1] === "left"
-          ? "horizontal"
-          : direction === "left" && directions[i - 1] === "up"
-          ? "ur"
-          : direction === "left" && directions[i - 1] === "down"
-          ? "br"
-          : direction === "up" && directions[i - 1] === "none"
-          ? "vertical"
-          : direction === "up" && directions[i - 1] === "up"
-          ? "vertical"
-          : direction === "up" && directions[i - 1] === "left"
-          ? "bl"
-          : direction === "up" && directions[i - 1] === "right"
-          ? "br"
-          : direction === "down" && directions[i - 1] === "none"
-          ? "vertical"
-          : direction === "down" && directions[i - 1] === "down"
-          ? "vertical"
-          : direction === "down" && directions[i - 1] === "left"
-          ? "ul"
-          : direction === "down" && directions[i - 1] === "right"
-          ? "ur"
-          : "";
-      lines.push(line);
-    }
-    lines.push("landing-pad");
-    return lines;
-  }
+  /*----- Mouse Handlers -----*/
 
-  // Handles onMouseDown event on node at given row and column.
+  // Handles onMouseDown event on node at given coordinates.
   handleOnMouseDown(row, col) {
     const grid = this.copyGrid();
     const node = grid[row][col];
-    // Start moving target node.
+
+    // Start moving start, target or launchpad nodes.
     if (node.isTarget) {
       this.setState({ isMovingTarget: true, mouseDown: true });
       return;
     }
-    // Start moving launch pad.
     if (node.isPath && node.direction === "landing-pad") {
       this.setState({ isMovingLaunchPad: true, mouseDown: true });
       return;
     }
-    // Start moving start node.
     if (node.isStart) {
       this.setState({ isMovingStart: true, mouseDown: true });
       return;
     }
-    // Start drawing walls or weights no the node.
+
+    // Start drawing walls or weights.
     switch (this.state.drawMode) {
       case DRAW_MODE.WALLS:
         node.isWall = !node.isWall;
@@ -470,10 +413,12 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  // Handle onMouseEnter for node at given coordinates.
   handleOnMouseEnter(row, col) {
     if (this.state.mouseDown === true) {
       const grid = this.copyGrid();
       const node = grid[row][col];
+
       // Move target node.
       if (this.state.isMovingTarget) {
         // Remove path.
@@ -484,7 +429,7 @@ export default class PathfindingVisualizer extends Component {
             node_.isVisited = false;
           }
         }
-        // Move target node.
+        // Reposition target node.
         const prevTarget =
           grid[this.state.targetNodeRow][this.state.targetNodeCol];
         if (!prevTarget.isTargetReached) {
@@ -499,22 +444,20 @@ export default class PathfindingVisualizer extends Component {
         prevTarget.isStart = false;
         node.isTarget = true;
         node.isTargetReached = true;
-        // Set state.
         this.setState(
           {
             grid: grid,
             targetNodeRow: row,
             targetNodeCol: col,
           },
-          // ReDraw path.
           () => {
+            // Redraw the rest of the path.
             this.redrawPath(this.state.algorithm);
           }
         );
         return;
-        /*this.setState({ grid: grid, targetNodeRow: row, targetNodeCol: col });
-        return;*/
       }
+
       // Move launch pad.
       if (this.state.isMovingLaunchPad) {
         // Remove path.
@@ -525,19 +468,18 @@ export default class PathfindingVisualizer extends Component {
             node_.isVisited = false;
           }
         }
-        // Move launch pad.
+        // Reposition the launch pad.
         const prevLaunchPad =
           grid[this.state.launchPadRow][this.state.launchPadCol];
         prevLaunchPad.isPath = false;
         prevLaunchPad.direction = null;
         node.isPath = true;
         node.direction = "landing-pad";
-        // Adjust start node.
+        // Reposition the start node.
         const prevStart =
           grid[this.state.startNodeRow][this.state.startNodeCol];
         prevStart.isStart = false;
         node.isStart = true;
-        // Set state.
         this.setState(
           {
             grid: grid,
@@ -546,13 +488,14 @@ export default class PathfindingVisualizer extends Component {
             startNodeRow: row,
             startNodeCol: col,
           },
-          // ReDraw path.
+          // Redraw the rest of the path.
           () => {
             this.redrawPath(this.state.algorithm);
           }
         );
         return;
       }
+
       // Move start node.
       if (this.state.isMovingStart) {
         const prevStart =
@@ -563,6 +506,7 @@ export default class PathfindingVisualizer extends Component {
         return;
       }
 
+      // Continue drawing walls or weights.
       switch (this.state.drawMode) {
         case DRAW_MODE.WALLS:
           node.isWall = !node.isWall;
