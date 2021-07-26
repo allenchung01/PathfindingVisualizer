@@ -22,6 +22,7 @@ import {
   clearPath,
   clearWalls,
   createInitialGrid,
+  resetNodes,
 } from "./Functions/GridFunctions";
 
 // CSS
@@ -70,10 +71,12 @@ export default class PathfindingVisualizer extends Component {
       weightValue: 5,
     };
     // Bind 'this' in constructor to avoid binding on every render.
+    this.copyGrid = copyGrid.bind(this);
     this.clearWeights = clearWeights.bind(this);
     this.clearPath = clearPath.bind(this);
     this.clearWalls = clearWalls.bind(this);
     this.createInitialGrid = createInitialGrid.bind(this);
+    this.resetNodes = resetNodes.bind(this);
   }
 
   setUp() {
@@ -134,7 +137,7 @@ export default class PathfindingVisualizer extends Component {
     );
   }
 
-  // OnClick handlers for setting algorithm.
+  // OnClick handlers.
   setAlgorithmDijkstra = () => {
     this.setState({ algorithm: ALGORITHM.DIJKSTRA });
   };
@@ -147,15 +150,12 @@ export default class PathfindingVisualizer extends Component {
   setAlgorithmAStar = () => {
     this.setState({ algorithm: ALGORITHM.ASTAR });
   };
-
   visualizeAlgorithm = () => {
     this.visualize(this.state.algorithm);
   };
-
   setDrawMode = (mode) => {
     this.setState({ drawMode: mode });
   };
-
   setWeightValue = (value) => {
     this.setState({ weightValue: value });
   };
@@ -182,7 +182,7 @@ export default class PathfindingVisualizer extends Component {
 
   // Displays the algorithm's path without discovery animations.
   redrawPath(algorithm) {
-    let grid = copyGrid(this.state.grid);
+    let grid = this.copyGrid();
     const startNode = grid[this.state.launchPadRow][this.state.launchPadCol];
     const targetNode = grid[this.state.targetNodeRow][this.state.targetNodeCol];
 
@@ -233,7 +233,7 @@ export default class PathfindingVisualizer extends Component {
 
     const lines = this.pathToLines(pathReversed);
 
-    grid = copyGrid(this.state.grid);
+    grid = this.copyGrid();
 
     for (let i = 0; i < pathReversed.length; i++) {
       const row = pathReversed[i].row;
@@ -245,10 +245,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeDijkstra() {
-    let grid = copyGrid(this.state.grid);
+    let grid = this.copyGrid();
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = copyGrid(this.state.grid);
+      grid = this.copyGrid();
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -265,10 +265,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeBreadthFirstSearch() {
-    let grid = copyGrid(this.state.grid);
+    let grid = this.copyGrid();
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = copyGrid(this.state.grid);
+      grid = this.copyGrid();
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -284,10 +284,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeDepthFirstSearch() {
-    let grid = copyGrid(this.state.grid);
+    let grid = this.copyGrid();
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = copyGrid(this.state.grid);
+      grid = this.copyGrid();
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -303,10 +303,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeAStar() {
-    let grid = copyGrid(this.state.grid);
+    let grid = this.copyGrid();
     this.resetNodes(grid);
     this.setState({ grid: grid }, () => {
-      grid = copyGrid(this.state.grid);
+      grid = this.copyGrid();
       const startNode = grid[this.state.startNodeRow][this.state.startNodeCol];
       const targetNode =
         grid[this.state.targetNodeRow][this.state.targetNodeCol];
@@ -361,7 +361,7 @@ export default class PathfindingVisualizer extends Component {
     const node = pathReversed[i];
     if (!node.isStart) {
       const prevNode = pathReversed[i + 1];
-      const grid = copyGrid(this.state.grid);
+      const grid = this.copyGrid();
       grid[prevNode.row][prevNode.col].isStart = false;
       grid[prevNode.row][prevNode.col].isPath = true;
       grid[prevNode.row][prevNode.col].direction = lines[i + 1];
@@ -444,7 +444,7 @@ export default class PathfindingVisualizer extends Component {
 
   // Handles onMouseDown event on node at given row and column.
   handleOnMouseDown(row, col) {
-    const grid = copyGrid(this.state.grid);
+    const grid = this.copyGrid();
     const node = grid[row][col];
     // Start moving target node.
     if (node.isTarget) {
@@ -491,7 +491,7 @@ export default class PathfindingVisualizer extends Component {
 
   handleOnMouseEnter(row, col) {
     if (this.state.mouseDown === true) {
-      const grid = copyGrid(this.state.grid);
+      const grid = this.copyGrid();
       const node = grid[row][col];
       // Move target node.
       if (this.state.isMovingTarget) {
@@ -632,31 +632,5 @@ export default class PathfindingVisualizer extends Component {
         })}
       </div>
     );
-  }
-
-  resetNodes(grid) {
-    for (const row of grid) {
-      for (const node of row) {
-        // We have to reset isVisited, and isPath of nodes the same way we set them.
-        if (!node.isWall && !node.isStart && !node.isTarget && !node.isWeight) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node";
-        } else if (node.isWeight) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-weight unvisited";
-        }
-        node.isVisited = false;
-        node.isPath = false;
-        node.previousNode = null;
-        node.distance = Infinity;
-        node.isStart =
-          node.row === this.state.startNodeRow &&
-          node.col === this.state.startNodeCol;
-        node.isTarget =
-          node.row === this.state.targetNodeRow &&
-          node.col === this.state.targetNodeCol;
-        node.isTargetReached = false;
-      }
-    }
   }
 }
