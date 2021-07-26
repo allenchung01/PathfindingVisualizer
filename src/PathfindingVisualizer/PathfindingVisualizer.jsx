@@ -86,19 +86,6 @@ export default class PathfindingVisualizer extends Component {
     this.createInitialGrid(NUM_ROWS, NUM_COLS);
   }
 
-  setAlgorithmDijkstra = () => {
-    this.setState({ algorithm: ALGORITHM.DIJKSTRA });
-  };
-  setAlgorithmBFS = () => {
-    this.setState({ algorithm: ALGORITHM.BFS });
-  };
-  setAlgorithmDFS = () => {
-    this.setState({ algorithm: ALGORITHM.DFS });
-  };
-  setAlgorithmAStar = () => {
-    this.setState({ algorithm: ALGORITHM.ASTAR });
-  };
-
   render() {
     const { grid } = this.state;
     return (
@@ -111,10 +98,7 @@ export default class PathfindingVisualizer extends Component {
               <button onClick={this.setAlgorithmDFS}>DFS</button>
               <button onClick={this.setAlgorithmAStar}>A*</button>
             </DropdownMenu>
-            <button
-              id="visualize-button"
-              onClick={() => this.visualize(this.state.algorithm)}
-            >
+            <button id="visualize-button" onClick={this.visualizeAlgorithm}>
               Go
             </button>
           </NavigationSection>
@@ -126,17 +110,13 @@ export default class PathfindingVisualizer extends Component {
           </NavigationSection>
 
           <NavigationSection>
-            <DrawToggle
-              setDrawMode={(mode) => {
-                this.setState({ drawMode: mode });
-              }}
-            />
+            <DrawToggle setDrawMode={this.setDrawMode} />
           </NavigationSection>
 
           <NavigationSection>
             <Slider
               value={this.state.weightValue}
-              setValue={this.setWeightValue.bind(this)}
+              setValue={this.setWeightValue}
             />
           </NavigationSection>
 
@@ -154,9 +134,31 @@ export default class PathfindingVisualizer extends Component {
     );
   }
 
-  setWeightValue(value) {
+  // OnClick handlers for setting algorithm.
+  setAlgorithmDijkstra = () => {
+    this.setState({ algorithm: ALGORITHM.DIJKSTRA });
+  };
+  setAlgorithmBFS = () => {
+    this.setState({ algorithm: ALGORITHM.BFS });
+  };
+  setAlgorithmDFS = () => {
+    this.setState({ algorithm: ALGORITHM.DFS });
+  };
+  setAlgorithmAStar = () => {
+    this.setState({ algorithm: ALGORITHM.ASTAR });
+  };
+
+  visualizeAlgorithm = () => {
+    this.visualize(this.state.algorithm);
+  };
+
+  setDrawMode = (mode) => {
+    this.setState({ drawMode: mode });
+  };
+
+  setWeightValue = (value) => {
     this.setState({ weightValue: value });
-  }
+  };
 
   // Visualizes the algorithm with discovery animations.
   visualize(algorithm) {
