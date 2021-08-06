@@ -1,0 +1,58 @@
+#popup-overlay {
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.15);
+  animation-name: animateBlur;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animateBlur {
+  0% {
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    backdrop-filter: blur(2px);
+  }
+}
+
+#popup-container {
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+  border-radius: 20px;
+  animation-name: animatePopUp;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animatePopUp {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#close-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 20px;
+  margin-right: 20px;
+  background-image: url("../../Images/close.svg");
+  background-size: contain;
+  background-color: transparent;
+  width: 10px;
+  height: 10px;
+  border: none;
+  cursor: pointer;
+}

@@ -1,11 +1,17 @@
 .credits {
   background-color: white !important;
-  margin: 20px;
 }
 
 .credits .credit {
-  text-align: right;
+  text-align: left;
   color: #404040;
   display: block;
+}
+
+.credits > *:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.credit > img {
   margin-right: 20px;
 }

@@ -9,6 +9,7 @@ import Slider from "./Components/Buttons/Slider/Slider";
 import AlgorithmTitle from "./Components/AlgorithmTitle/AlgorithmTitle";
 import Credits from "./Components/Credits/Credits";
 import NavigationSection from "./Components/Navigation/NavigationSection";
+import PopUp from "./Components/PopUp/PopUp";
 
 // Functions
 import { dijkstra } from "./Search Algorithms/Dijkstra";
@@ -70,6 +71,7 @@ export default class PathfindingVisualizer extends Component {
       isMovingTarget: false,
       isMovingLaunchPad: false,
       weightValue: 5,
+      areCreditsVisible: false,
     };
     // Bind 'this' in constructor to avoid binding on every render.
     this.copyGrid = copyGrid.bind(this);
@@ -125,18 +127,24 @@ export default class PathfindingVisualizer extends Component {
           </NavigationSection>
 
           <NavigationSection>
-            {/*
-            <DropdownMenu title="More">
-              <button>Credits</button>
-              <a href="https://github.com/allenchung01">
-                <button>GitHub</button>
-              </a>
-            </DropdownMenu>*/}
+            {
+              <DropdownMenu title="More">
+                <button onClick={this.toggleCredits}>Credits</button>
+                <a href="https://github.com/allenchung01">
+                  <button>GitHub</button>
+                </a>
+              </DropdownMenu>
+            }
           </NavigationSection>
         </NavigationBar>
         {this.displayGrid(grid)}
         <AlgorithmTitle algorithm={this.state.algorithm} />
-        <Credits />
+        {this.state.areCreditsVisible ? (
+          <PopUp togglePopUp={this.toggleCredits}>
+            <Credits />
+          </PopUp>
+        ) : null}
+        {/*<Credits />*/}
       </div>
     );
   }
@@ -162,6 +170,10 @@ export default class PathfindingVisualizer extends Component {
   };
   setWeightValue = (value) => {
     this.setState({ weightValue: value });
+  };
+
+  toggleCredits = () => {
+    this.setState({ areCreditsVisible: !this.state.areCreditsVisible });
   };
 
   // Visualizes the algorithm with discovery animations.
