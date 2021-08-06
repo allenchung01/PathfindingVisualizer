@@ -144,7 +144,6 @@ export default class PathfindingVisualizer extends Component {
             <Credits />
           </PopUp>
         ) : null}
-        {/*<Credits />*/}
       </div>
     );
   }
