@@ -1,0 +1,54 @@
+#skip-button {
+  background-color: whitesmoke;
+  box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.05);
+}
+
+#continue-button {
+  background-color: rgb(72, 191, 255);
+  box-shadow: -3px 3px 16px 4px rgba(57, 153, 204, 0.2);
+  color: white;
+}
+
+#tutorial-container {
+}
+
+#tutorial-buttons {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  white-space: nowrap;
+}
+
+#tutorial-buttons > button {
+  border: none;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+#tutorial-buttons > button:hover {
+  animation-name: scaleEffect;
+  animation-duration: 1.2s;
+}
+
+#tutorial-buttons > button:active {
+  position: relative;
+  top: 2px;
+  box-shadow: -6px 6px 20px 10px rgb(0, 0, 0, 0.025);
+}
+
+#tutorial-buttons > button:not(:last-child) {
+  margin-right: 20px;
+}
+
+#tutorial-title {
+  margin-bottom: 40px;
+  text-align: left;
+  font-family: Jost-Bold;
+}
+
+#tutorial-description {
+  margin-bottom: 20px;
+  line-height: 140%;
+  text-align: left;
+}

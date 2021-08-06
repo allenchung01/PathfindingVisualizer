@@ -10,6 +10,7 @@ import AlgorithmTitle from "./Components/AlgorithmTitle/AlgorithmTitle";
 import Credits from "./Components/Credits/Credits";
 import NavigationSection from "./Components/Navigation/NavigationSection";
 import PopUp from "./Components/PopUp/PopUp";
+import Tutorial from "./Components/Tutorial/Tutorial";
 
 // Functions
 import { dijkstra } from "./Search Algorithms/Dijkstra";
@@ -72,6 +73,7 @@ export default class PathfindingVisualizer extends Component {
       isMovingLaunchPad: false,
       weightValue: 5,
       areCreditsVisible: false,
+      isViewingTutorial: true,
     };
     // Bind 'this' in constructor to avoid binding on every render.
     this.copyGrid = copyGrid.bind(this);
@@ -129,6 +131,7 @@ export default class PathfindingVisualizer extends Component {
           <NavigationSection>
             {
               <DropdownMenu title="More">
+                <button onClick={this.toggleTutorial}>Tutorial</button>
                 <button onClick={this.toggleCredits}>Credits</button>
                 <a href="https://github.com/allenchung01">
                   <button>GitHub</button>
@@ -139,9 +142,16 @@ export default class PathfindingVisualizer extends Component {
         </NavigationBar>
         {this.displayGrid(grid)}
         <AlgorithmTitle algorithm={this.state.algorithm} />
+
         {this.state.areCreditsVisible ? (
           <PopUp togglePopUp={this.toggleCredits}>
             <Credits />
+          </PopUp>
+        ) : null}
+
+        {this.state.isViewingTutorial ? (
+          <PopUp togglePopUp={this.toggleTutorial}>
+            <Tutorial exitTutorial={this.toggleTutorial}></Tutorial>
           </PopUp>
         ) : null}
       </div>
@@ -173,6 +183,9 @@ export default class PathfindingVisualizer extends Component {
 
   toggleCredits = () => {
     this.setState({ areCreditsVisible: !this.state.areCreditsVisible });
+  };
+  toggleTutorial = () => {
+    this.setState({ isViewingTutorial: !this.state.isViewingTutorial });
   };
 
   // Visualizes the algorithm with discovery animations.
