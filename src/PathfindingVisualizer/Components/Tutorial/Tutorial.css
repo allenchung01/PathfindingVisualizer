@@ -53,3 +53,60 @@
   line-height: 140%;
   text-align: left;
 }
+
+#page0-img {
+  display: inline-block;
+  width: 40px;
+  margin-bottom: 40px;
+  transform: rotate(45deg);
+}
+
+#rules-grid {
+  display: grid;
+  grid-template-columns: 40px 40px 40px;
+  grid-template-rows: 40px 40px 40px;
+  gap: 1px;
+  margin-bottom: 40px;
+  grid-template-areas:
+    ". top ."
+    "left center right"
+    ". bottom .";
+}
+
+#top-node {
+  grid-area: top;
+}
+#right-node {
+  grid-area: right;
+  background-image: url("../../Images/weight-plates.svg");
+  background-size: contain;
+}
+#left-node {
+  grid-area: left;
+}
+#center-node {
+  grid-area: center;
+  background-image: url("../../Images/icons8-launch-90.png");
+  background-size: contain;
+}
+#right-node::after {
+  position: absolute;
+  content: "5";
+  background-color: #404040;
+  padding: 1px 3px 1px 3px;
+  border-radius: 50vw;
+  color: white;
+}
+#bottom-node {
+  grid-area: bottom;
+}
+
+.rules-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 40px;
+  width: 40px;
+  background-color: whitesmoke;
+}

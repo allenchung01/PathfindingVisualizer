@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import "./Tutorial.css";
+import rocketImg from "../../Images/icons8-launch-90.png";
 
 export default function Tutorial(props) {
   const { exitTutorial } = props;
@@ -58,6 +59,24 @@ export default function Tutorial(props) {
   return (
     <div id="tutorial-container">
       <h2 id="tutorial-title">{pages[page].title}</h2>
+
+      {page == 0 ? <img id="page0-img" src={rocketImg} alt="rocket" /> : null}
+      {page == 1 ? (
+        <div id="rules-grid">
+          <div id="top-node" className="rules-node">
+            <p>1</p>
+          </div>
+          <div id="left-node" className="rules-node">
+            1
+          </div>
+          <div id="center-node" className="rules-node"></div>
+          <div id="right-node" className="rules-node"></div>
+          <div id="bottom-node" className="rules-node">
+            1
+          </div>
+        </div>
+      ) : null}
+
       <p id="tutorial-description">{pages[page].description}</p>
       <div id="tutorial-buttons">
         <button id="skip-button" onClick={page == 0 ? exitTutorial : prevPage}>
