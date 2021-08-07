@@ -25,6 +25,7 @@
   border: none;
   border-radius: 10px;
   padding: 16px;
+  cursor: pointer;
 }
 
 #tutorial-buttons > button:hover {
@@ -123,6 +124,10 @@
   margin-bottom: 40px;
 }
 
+#tutorial-dropdown button {
+  cursor: pointer;
+}
+
 #tutorial-slider {
   margin-bottom: 40px;
 }
@@ -136,6 +141,7 @@
   background-color: white;
   padding: 16px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 #moving-nodes-tutorial {
