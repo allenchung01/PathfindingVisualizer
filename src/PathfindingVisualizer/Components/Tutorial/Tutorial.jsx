@@ -3,9 +3,14 @@ import React, { useState } from "react";
 import "./Tutorial.css";
 import rocketImg from "../../Images/icons8-launch-90.png";
 
+import DropdownMenu from "../Buttons/DropdownMenu/DropdownMenu";
+import DrawToggle from "../Buttons/DrawToggle/DrawToggle";
+import Slider from "../Buttons/Slider/Slider";
+
 export default function Tutorial(props) {
   const { exitTutorial } = props;
   const [page, setPage] = useState(0);
+  const [weightValue, setWeightValue] = useState(5);
 
   const pages = [
     {
@@ -67,13 +72,40 @@ export default function Tutorial(props) {
             <p>1</p>
           </div>
           <div id="left-node" className="rules-node">
-            1
+            Wall
           </div>
           <div id="center-node" className="rules-node"></div>
           <div id="right-node" className="rules-node"></div>
           <div id="bottom-node" className="rules-node">
             1
           </div>
+        </div>
+      ) : null}
+      {page == 2 ? (
+        <div id="tutorial-dropdown">
+          <DropdownMenu title="Algorithms">
+            <button>Dijkstra</button>
+            <button>BFS</button>
+            <button>DFS</button>
+            <button>A*</button>
+          </DropdownMenu>
+        </div>
+      ) : null}
+      {page == 3 ? (
+        <div id="draw-tutorial">
+          <DrawToggle setDrawMode={() => {}} />
+        </div>
+      ) : null}
+      {page == 4 ? (
+        <div id="tutorial-slider">
+          <Slider value={weightValue} setValue={setWeightValue} />
+        </div>
+      ) : null}
+      {page == 5 ? (
+        <div id="moving-nodes-tutorial">
+          <div id="tutorial-start-node" className="rules-node"></div>
+          <div id="tutorial-path-node" className="rules-node"></div>
+          <div id="tutorial-end-node" className="rules-node"></div>
         </div>
       ) : null}
 

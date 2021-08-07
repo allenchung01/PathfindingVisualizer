@@ -62,6 +62,7 @@
 }
 
 #rules-grid {
+  justify-content: center;
   display: grid;
   grid-template-columns: 40px 40px 40px;
   grid-template-rows: 40px 40px 40px;
@@ -83,6 +84,12 @@
 }
 #left-node {
   grid-area: left;
+  background-color: #404040;
+}
+#left-node::after {
+  position: absolute;
+  content: "wall";
+  color: white;
 }
 #center-node {
   grid-area: center;
@@ -102,11 +109,49 @@
 }
 
 .rules-node {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   height: 40px;
   width: 40px;
   background-color: whitesmoke;
+  outline: 1px solid #e1e1e1;
+}
+
+#tutorial-dropdown {
+  margin-bottom: 40px;
+}
+
+#tutorial-slider {
+  margin-bottom: 40px;
+}
+
+#draw-tutorial {
+  margin-bottom: 40px;
+}
+
+#draw-tutorial button {
+  border: none;
+  background-color: white;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+#moving-nodes-tutorial {
+  margin-bottom: 40px;
+}
+
+#tutorial-start-node {
+  background-image: url("../../Images/icons8-launch-90.png");
+  background-size: contain;
+}
+#tutorial-path-node {
+  background-image: url("../../Images/icons8-vertical-line-24.png");
+  transform: rotate(90deg);
+  background-size: contain;
+}
+#tutorial-end-node {
+  background-image: url("../../Images/icons8-empty-flag-90.png");
+  background-size: contain;
 }
