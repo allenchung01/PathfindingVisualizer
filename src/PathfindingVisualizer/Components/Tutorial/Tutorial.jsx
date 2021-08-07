@@ -26,7 +26,7 @@ export default function Tutorial(props) {
     {
       title: "Selecting an Algorithm",
       description:
-        "Use the dropdown in the upper left corner of the screen to select an algorithm. Hover over the info icon in the lower left of the screen to view more information about the algorithm. Click on 'Go' when you are ready visualize.",
+        "Use the dropdown in the upper left corner of the screen to select an algorithm. Hover over the info icon in the lower left of the screen to view more information about the algorithm. Click on 'Go' when you are ready to visualize.",
     },
     {
       title: "Drawing Walls and Weights",
