@@ -51,8 +51,8 @@
   background-image: url("../../Images/close.svg");
   background-size: contain;
   background-color: transparent;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border: none;
   cursor: pointer;
 }
