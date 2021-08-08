@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/PathfindingVisualizer/static/css/main.84adaf71.chunk.css",
+    "main.css": "/PathfindingVisualizer/static/css/main.c4bd2d28.chunk.css",
     "main.js": "/PathfindingVisualizer/static/js/main.d764d8be.chunk.js",
     "main.js.map": "/PathfindingVisualizer/static/js/main.d764d8be.chunk.js.map",
     "runtime-main.js": "/PathfindingVisualizer/static/js/runtime-main.c37fc149.js",
@@ -10,7 +10,7 @@
     "static/js/3.ce8ebb17.chunk.js": "/PathfindingVisualizer/static/js/3.ce8ebb17.chunk.js",
     "static/js/3.ce8ebb17.chunk.js.map": "/PathfindingVisualizer/static/js/3.ce8ebb17.chunk.js.map",
     "index.html": "/PathfindingVisualizer/index.html",
-    "static/css/main.84adaf71.chunk.css.map": "/PathfindingVisualizer/static/css/main.84adaf71.chunk.css.map",
+    "static/css/main.c4bd2d28.chunk.css.map": "/PathfindingVisualizer/static/css/main.c4bd2d28.chunk.css.map",
     "static/js/2.c93dd4ba.chunk.js.LICENSE.txt": "/PathfindingVisualizer/static/js/2.c93dd4ba.chunk.js.LICENSE.txt",
     "static/media/PathfindingVisualizer.css": "/PathfindingVisualizer/static/media/Jost-VariableFont_wght.3410386a.ttf",
     "static/media/PopUp.css": "/PathfindingVisualizer/static/media/close.61d8917c.svg",
@@ -22,7 +22,7 @@
   "entrypoints": [
     "static/js/runtime-main.c37fc149.js",
     "static/js/2.c93dd4ba.chunk.js",
-    "static/css/main.84adaf71.chunk.css",
+    "static/css/main.c4bd2d28.chunk.css",
     "static/js/main.d764d8be.chunk.js"
   ]
 }
