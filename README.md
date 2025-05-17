@@ -1,6 +1,6 @@
 # Pathfinding Visualizer
 
-[🔗 Live Demo](https://allenchung01.github.io/PathfindingVisualizer/)!
+[🔗 Live Demo](https://allenchung01.github.io/pathfinding-visualizer/)!
 
 ![Djikstra's Algorithm](./PathfindingPreview.png)
 <!-- Demo GIF -->
