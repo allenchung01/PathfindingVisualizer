@@ -1,7 +1,7 @@
 {
   "name": "pathfinding-visualizer",
   "version": "0.1.0",
-  "homepage": "https://allenchung01.github.io/PathfindingVisualizer",
+  "homepage": "https://allenchung01.github.io/pathfinding-visualizer",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.12.0",
